@@ -1,3 +1,4 @@
+import 'package:cool_app/view/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -48,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                     // Navigate to the main screen
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MainScreen()),
+                      MaterialPageRoute(builder: (context) => DashboardScreen()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -75,16 +76,3 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class MainScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          "Welcome to the Main App!",
-          style: TextStyle(fontSize: 28),
-        ),
-      ),
-    );
-  }
-}
