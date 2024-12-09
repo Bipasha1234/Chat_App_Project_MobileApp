@@ -59,7 +59,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: Text("Log In"),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
                     // Add "Forgot Password" logic here
