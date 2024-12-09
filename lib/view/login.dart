@@ -64,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () {
                     // Add "Forgot Password" logic here
                   },
-                  child: Text("Forgot Password?"),
+                  child: const Text("Forgot Password?"),
                 ),
               ],
             ),
