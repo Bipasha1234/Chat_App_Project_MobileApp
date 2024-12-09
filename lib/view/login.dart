@@ -57,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text("Log In"),
+                  child: const Text("Log In"),
                 ),
                 const SizedBox(height: 10),
                 TextButton(
