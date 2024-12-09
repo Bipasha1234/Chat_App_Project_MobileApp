@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                     prefixIcon: Icon(Icons.lock),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to the main screen
