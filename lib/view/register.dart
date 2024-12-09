@@ -1,3 +1,4 @@
+import 'package:cool_app/view/login.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -98,12 +99,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(height: 20),
 
               // Navigate to Login Screen
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Navigate back to Login Screen
-                },
-                child: Text('Already have an account? Login'),
-              ),
+             TextButton(
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to LoginScreen
+    );
+  },
+  child: Text('Already have an account? Login'),
+)
+
             ],
           ),
         ),
