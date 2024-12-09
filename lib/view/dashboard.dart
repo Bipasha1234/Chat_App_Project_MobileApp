@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dashboard"),
+        title: const Text("Dashboard"),
         backgroundColor: Colors.blue,
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -33,17 +35,15 @@ class DashboardScreen extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text("Profile"),
+              title: const Text("Profile"),
               onTap: () {
-                // Navigate to Profile screen (you can create a ProfileScreen.dart)
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
+              
+        
+                
               },
             ),
             ListTile(
-              title: Text("Settings"),
+              title: const Text("Settings"),
               onTap: () {
                 // Navigate to Settings screen (you can create a SettingsScreen.dart)
                 Navigator.push(
@@ -71,25 +71,17 @@ class DashboardScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Welcome to the Dashboard!",
+              "Enjoy Your Football - ENERGIZE YOURSELF!",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            Text(
-              "Here are some quick actions you can take:",
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
+         
+           
             // Buttons for various actions
             ElevatedButton(
               onPressed: () {
-                // Navigate to Profile page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
               },
-              child: Text('View Profile'),
+              child: Text('View Grounds'),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
@@ -106,7 +98,7 @@ class DashboardScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => SettingsScreen()),
                 );
               },
-              child: Text('Go to Settings'),
+              child: Text('Settings'),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
@@ -138,16 +130,6 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-// Placeholder for Profile Screen
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Profile")),
-      body: Center(child: Text("Profile Screen")),
-    );
-  }
-}
 
 // Placeholder for Settings Screen
 class SettingsScreen extends StatelessWidget {
