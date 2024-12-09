@@ -1,3 +1,4 @@
+import 'package:cool_app/view/register.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -61,18 +62,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedButton(
-              onPressed: _currentPage == onboardingData.length - 1
-      ? () {
-          // Temporarily replace the navigation to LoginScreen with a placeholder action
-          print("Onboarding completed. No navigation in feature1.");
-          // Or you can just navigate to the MainScreen or show a simple snackbar for testing.
-        }
-      : () {
-          _pageController.nextPage(
-            duration: Duration(milliseconds: 100),
-            curve: Curves.ease,
-          );
-        },
+     onPressed: _currentPage == onboardingData.length - 1
+    ? () {
+        // Navigate to the Login Screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => RegisterScreen()),
+        );
+      }
+    : () {
+        _pageController.nextPage(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.ease,
+        );
+      },
+
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
