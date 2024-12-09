@@ -53,12 +53,12 @@ class DashboardScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text("Logout"),
+              title: const Text("Logout"),
               onTap: () {
                 // Handle Logout functionality
                 Navigator.pop(context); // Close the drawer
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Logged out successfully!')),
+                  const SnackBar(content: Text('Logged out successfully!')),
                 );
               },
             ),
@@ -70,26 +70,26 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
+            const Text(
               "Enjoy Your Football - ENERGIZE YOURSELF!",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
          
            
             // Buttons for various actions
             ElevatedButton(
               onPressed: () {
               },
-              child: Text('View Grounds'),
+              child: const Text('View Grounds'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navigate to Settings page
@@ -98,26 +98,26 @@ class DashboardScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => SettingsScreen()),
                 );
               },
-              child: Text('Settings'),
+              child: const Text('Settings'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Logout action (You might handle this with an auth system)
                 Navigator.pop(context); // Navigate back to the previous screen
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Logged out successfully!')),
+                  const SnackBar(content: Text('Logged out successfully!')),
                 );
               },
-              child: Text('Logout'),
+              child: const Text('Logout'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -133,11 +133,13 @@ class DashboardScreen extends StatelessWidget {
 
 // Placeholder for Settings Screen
 class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Settings")),
-      body: Center(child: Text("Settings Screen")),
+      appBar: AppBar(title: const Text("Settings")),
+      body: const Center(child: Text("Settings Screen")),
     );
   }
 }
