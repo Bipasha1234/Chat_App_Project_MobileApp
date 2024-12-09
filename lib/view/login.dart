@@ -26,14 +26,14 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 40),
-                TextField(
+                const TextField(
                   decoration: InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextField(
                   obscureText: true,
                   decoration: InputDecoration(
