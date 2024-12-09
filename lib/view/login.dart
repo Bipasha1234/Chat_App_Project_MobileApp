@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
                     prefixIcon: Icon(Icons.email),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 TextField(
                   obscureText: true,
                   decoration: InputDecoration(
@@ -80,7 +80,7 @@ class MainScreen extends StatelessWidget {
       body: Center(
         child: Text(
           "Welcome to the Main App!",
-          style: TextStyle(fontSize: 24),
+          style: TextStyle(fontSize: 28),
         ),
       ),
     );
