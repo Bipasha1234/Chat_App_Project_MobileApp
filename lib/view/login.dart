@@ -1,4 +1,5 @@
 import 'package:cool_app/view/dashboard.dart';
+import 'package:cool_app/view/register.dart'; // Import the RegisterScreen
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -7,6 +8,25 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF80CBB2), // AppBar color
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back, // Back arrow icon
+            color: Colors.white, // White color for the arrow
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RegisterScreen()), // Navigate to RegisterScreen
+            );
+          },
+        ),
+        title: const Text(
+          "Login", // AppBar title
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -34,7 +54,6 @@ class LoginScreen extends StatelessWidget {
                     prefixIcon: Icon(
                       Icons.email,
                       color: Color(0xFF80CBB2),
- // Set icon color to green
                     ),
                   ),
                 ),
@@ -46,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(
                       Icons.lock,
-                      color: Color(0xFF80CBB2), // Set icon color to green
+                      color: Color(0xFF80CBB2),
                     ),
                   ),
                 ),
@@ -60,14 +79,15 @@ class LoginScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50), backgroundColor: const Color(0xFF80CBB2), // Set button color to green
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: const Color(0xFF80CBB2),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   child: const Text(
                     "Log In",
-                    style: TextStyle(color: Colors.white), // Set text color to white
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 10),

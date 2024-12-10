@@ -1,4 +1,5 @@
-import 'package:cool_app/view/login.dart';
+import 'package:cool_app/view/login.dart'; // Import the OnboardingScreen
+import 'package:cool_app/view/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -16,7 +17,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        backgroundColor: const Color(0xFF80CBB2), // Set AppBar color
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back, // Back arrow icon
+            color: Colors.white, // Set icon color to white
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => OnboardingScreen()), // Navigate to OnboardingScreen
+            );
+          },
+        ),
+        title: const Text(
+          "Register", // Title of the screen
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -88,7 +105,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50), backgroundColor: const Color(0xFF80CBB2), // Set button color to green
+                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: const Color(0xFF80CBB2), // Set button color to green
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

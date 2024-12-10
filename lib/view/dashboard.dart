@@ -17,7 +17,12 @@ class DashboardScreen extends StatelessWidget {
             Navigator.pop(context); // Navigate back to the previous screen
           },
         ),
-        title: const Text("Chats"), // App title
+       title: const Text(
+          "Chats", // App title
+          style: TextStyle(
+            color: Colors.white, // Set text color to white
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.white), // Search icon
