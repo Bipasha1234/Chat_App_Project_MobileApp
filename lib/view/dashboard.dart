@@ -7,139 +7,108 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dashboard"),
-        backgroundColor: Colors.blue,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.person, size: 40, color: Colors.blue),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "Welcome User",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              title: const Text("Profile"),
-              onTap: () {
-              
-        
-                
-              },
-            ),
-            ListTile(
-              title: const Text("Settings"),
-              onTap: () {
-                // Navigate to Settings screen (you can create a SettingsScreen.dart)
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsScreen()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text("Logout"),
-              onTap: () {
-                // Handle Logout functionality
-                Navigator.pop(context); // Close the drawer
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Logged out successfully!')),
-                );
-              },
-            ),
-          ],
+        backgroundColor: const Color(0xFF80CBB2), // AppBar color
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back, // Back arrow icon
+            color: Colors.white, // White color for the arrow
+          ),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
         ),
+        title: const Text("Chats"), // App title
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.white), // Search icon
+            onPressed: () {
+              // Add search functionality here
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.add, color: Colors.white), // Plus icon
+            onPressed: () {
+              // Add functionality for adding items here
+            },
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-              "Enjoy Your Football - ENERGIZE YOURSELF!",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: ListView.builder(
+        itemCount: 4, // Number of chat items
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/image2.jpg'), // Replace with actual image path
             ),
-            const SizedBox(height: 20),
-         
-           
-            // Buttons for various actions
-            ElevatedButton(
-              onPressed: () {
-              },
-              child: const Text('View Grounds'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+            title: Text(
+              'User ${index + 1}', // Username
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to Settings page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsScreen()),
-                );
-              },
-              child: const Text('Settings'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+            subtitle: Text(
+              'This is a message preview for User ${index + 1}', // Message preview
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Logout action (You might handle this with an auth system)
-                Navigator.pop(context); // Navigate back to the previous screen
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Logged out successfully!')),
-                );
-              },
-              child: const Text('Logout'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+            trailing: const Text(
+              '12:30 PM', // Time or date
+              style: TextStyle(color: Colors.grey),
             ),
-          ],
-        ),
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Tapped on User ${index + 1}')),
+              );
+            },
+          );
+        },
       ),
-    );
-  }
-}
-
-
-// Placeholder for Settings Screen
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Settings")),
-      body: const Center(child: Text("Settings Screen")),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: const Color(0xFF80CBB2), // Highlight color
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble), // Icon for Chats
+            label: 'Chats',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.group), // Icon for Groups
+            label: 'Groups',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person), // Icon for Profile
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings), // Icon for Settings
+            label: 'Settings',
+          ),
+        ],
+        onTap: (index) {
+          // Handle navigation or actions for each button
+          switch (index) {
+            case 0:
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Chats selected')),
+              );
+              break;
+            case 1:
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Groups selected')),
+              );
+              break;
+            case 2:
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Profile selected')),
+              );
+              break;
+            case 3:
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Settings selected')),
+              );
+              break;
+          }
+        },
+      ),
     );
   }
 }

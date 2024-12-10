@@ -24,14 +24,18 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 const Text(
                   "Log in to your account",
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 8, 8, 8)),
                 ),
                 const SizedBox(height: 40),
                 const TextField(
                   decoration: InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon: Icon(
+                      Icons.email,
+                      color: Color(0xFF80CBB2),
+ // Set icon color to green
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -40,7 +44,10 @@ class LoginScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: "Password",
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
+                    prefixIcon: Icon(
+                      Icons.lock,
+                      color: Color(0xFF80CBB2), // Set icon color to green
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -53,12 +60,15 @@ class LoginScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50), backgroundColor: const Color(0xFF80CBB2), // Set button color to green
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text("Log In"),
+                  child: const Text(
+                    "Log In",
+                    style: TextStyle(color: Colors.white), // Set text color to white
+                  ),
                 ),
                 const SizedBox(height: 10),
                 TextButton(
@@ -75,4 +85,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-

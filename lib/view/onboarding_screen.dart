@@ -12,27 +12,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, String>> onboardingData = [
+  final List<Map<String, String?>> onboardingData = [
     {
-      "image": "assets/images/image1.jpg",
-      "title": "Welcome to MyApp",
-      "description": "Discover the best way to manage your tasks efficiently.",
+      "image": "assets/images/chattix.png",
+      // No title or description for this item
     },
     {
-      "image": "assets/images/image2.jpg",
-      "title": "Stay Organized",
-      "description": "Keep track of your goals and stay on top of your priorities.",
+      "image": "assets/images/image1.png",
+      "title": "Group Chatting",
+      "description": "Connect with multiple members in group chats.",
     },
     {
-      "image": "assets/images/image3.jpg",
-      "title": "Achieve More",
-      "description": "Accomplish your dreams and make every day productive.",
+      "image": "assets/images/image4.png",
+      "title": "Communicate Easily",
+      "description": "Send and recieves message instantly.",
     },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Expanded(
@@ -44,11 +44,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 });
               },
               itemCount: onboardingData.length,
-              itemBuilder: (context, index) => OnboardingContent(
-                image: onboardingData[index]["image"]!,
-                title: onboardingData[index]["title"]!,
-                description: onboardingData[index]["description"]!,
-              ),
+              itemBuilder: (context, index) {
+                // Provide default empty values if title or description doesn't exist
+                final image = onboardingData[index]["image"]!;
+                final title = onboardingData[index]["title"] ?? '';
+                final description = onboardingData[index]["description"] ?? '';
+                
+                return OnboardingContent(
+                  image: image,
+                  title: title,
+                  description: description,
+                );
+              },
             ),
           ),
           Row(
@@ -62,23 +69,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedButton(
-     onPressed: _currentPage == onboardingData.length - 1
-    ? () {
-        // Navigate to the Login Screen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => RegisterScreen()),
-        );
-      }
-    : () {
-        _pageController.nextPage(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.ease,
-        );
-      },
-
+              onPressed: _currentPage == onboardingData.length - 1
+                  ? () {
+                      // Navigate to the Login Screen
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterScreen()),
+                      );
+                    }
+                  : () {
+                      _pageController.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.ease,
+                      );
+                    },
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: Size(double.infinity, 50), backgroundColor: const Color(0xFF80CBB2),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -87,6 +93,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 _currentPage == onboardingData.length - 1
                     ? "Get Started"
                     : "Next",
+                    style: TextStyle(
+                  color: Colors.white, // Set text color to white for better contrast
+                ),
               ),
             ),
           ),
@@ -94,6 +103,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ],
       ),
     );
+
   }
 
   Widget buildDot(int index) {
@@ -102,7 +112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       width: _currentPage == index ? 20 : 10,
       margin: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
-        color: _currentPage == index ? Colors.blue : Colors.grey,
+        color: _currentPage == index ? const Color(0xFF80CBB2) : Colors.grey,
         borderRadius: BorderRadius.circular(5),
       ),
     );
@@ -124,38 +134,26 @@ class OnboardingContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(image, height: 100),
-        SizedBox(height: 10),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+        SizedBox(height: 20),
+        if (title.isNotEmpty)
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
         SizedBox(height: 10),
-        Text(
-          description,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
+        if (description.isNotEmpty)
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
           ),
-        ),
       ],
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          "Welcome to the Main App!",
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
     );
   }
 }

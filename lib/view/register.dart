@@ -16,8 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register"),
-        backgroundColor: Colors.blue,
+
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -88,27 +87,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // You can add logic to handle registration here.
                   }
                 },
-                child: Text('Register'),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: Size(double.infinity, 50), backgroundColor: const Color(0xFF80CBB2), // Set button color to green
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
+                ),
+                child: Text(
+                  'Register',
+                  style: TextStyle(color: Colors.white), // Text color white
                 ),
               ),
               SizedBox(height: 20),
 
               // Navigate to Login Screen
-             TextButton(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to LoginScreen
-    );
-  },
-  child: Text('Already have an account? Login'),
-)
-
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to LoginScreen
+                  );
+                },
+                child: Text('Already have an account? Login'),
+              ),
             ],
           ),
         ),
