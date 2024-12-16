@@ -113,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 child: Text(
                   'Register',
-                  style: TextStyle(color: Colors.white), // Text color white
+                  style: TextStyle(color: Colors.white,fontSize:18), // Text color white
                 ),
               ),
               SizedBox(height: 20),
@@ -126,7 +126,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to LoginScreen
                   );
                 },
-                child: Text('Already have an account? Login'),
+                child: Text(
+            'Already have an account? Login',
+            style: TextStyle(
+              color: Colors.black,
+              decoration: TextDecoration.underline, // Set text color to black
+            ),
+          ),
               ),
             ],
           ),

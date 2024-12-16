@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: const Text(
                     "Log In",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white,fontSize: 18),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -95,7 +95,10 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () {
                     // Add "Forgot Password" logic here
                   },
-                  child: const Text("Forgot Password?"),
+                  child: const Text("Forgot Password?",style: TextStyle(
+              color: Colors.black,
+              decoration: TextDecoration.underline, // Set text color to black
+            ),),
                 ),
               ],
             ),
