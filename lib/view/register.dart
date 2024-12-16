@@ -113,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 child: Text(
                   'Register',
-                  style: TextStyle(color: Colors.white,fontSize:18), // Text color white
+                  style: TextStyle(color: Colors.white,fontSize: 20), // Text color white
                 ),
               ),
               SizedBox(height: 20),
