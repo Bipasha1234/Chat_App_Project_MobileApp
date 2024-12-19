@@ -30,6 +30,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -68,33 +70,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                  onPressed: _currentPage == onboardingData.length - 1
-                      ? () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisterScreen()),
-                          );
-                        }
-                      : () {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.ease,
-                          );
-                        },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
-                    backgroundColor: const Color(0xFF80CBB2),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                child: SizedBox(
+                  width: screenWidth > 600
+                      ? 400
+                      : double.infinity, // Adjusted width
+                  child: ElevatedButton(
+                    onPressed: _currentPage == onboardingData.length - 1
+                        ? () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen()),
+                            );
+                          }
+                        : () {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.ease,
+                            );
+                          },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(200, 45), // Adjusted size
+                      backgroundColor: const Color(0xFF80CBB2),
+
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 24),
                     ),
-                  ),
-                  child: Text(
-                    _currentPage == onboardingData.length - 1
-                        ? "Get Started"
-                        : "Next",
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                    child: Text(
+                      _currentPage == onboardingData.length - 1
+                          ? "Get Started"
+                          : "Next",
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),

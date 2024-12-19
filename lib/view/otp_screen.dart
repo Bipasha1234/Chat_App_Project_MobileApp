@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:cool_app/view/user_profile.dart';
 import 'package:flutter/material.dart';
 
+import 'otp_input_field.dart'; // Import the reusable OTP field widget
+
 class OtpScreen extends StatefulWidget {
   final String email;
 
@@ -17,7 +19,7 @@ class _OtpScreenState extends State<OtpScreen> {
       List.generate(4, (index) => TextEditingController());
   late Timer _timer;
   int _remainingTime = 60;
-  String? _errorMessage; // Error message for invalid OTP
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -48,58 +50,65 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF80CBB2),
-        title: const Text(
-          "Enter OTP",
-          style: TextStyle(color: Colors.white),
+        backgroundColor: theme.primaryColor,
+        title: Text(
+          "OTP Verification",
+          style: TextStyle(
+            color: theme.colorScheme.onPrimary,
+            fontSize: isTablet ? 24 : 20,
+          ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back),
+          color: theme.colorScheme.onPrimary,
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(isTablet ? 30 : 20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              "Enter the OTP",
+            Text(
+              "Enter the provided OTP",
               style: TextStyle(
-                fontSize: 21,
+                fontSize: isTablet ? 24 : 21,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: theme.colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
             Text(
               "Sent to: ${widget.email}",
               style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
+                fontSize: isTablet ? 18 : 16,
+                color: theme.colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "0:${_remainingTime.toString().padLeft(2, '0')}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
+                  style: TextStyle(
+                    fontSize: isTablet ? 20 : 16,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(width: 10),
                 GestureDetector(
                   onTap: _remainingTime == 0
                       ? () {
-                          // Resend OTP logic here
                           setState(() {
                             _remainingTime = 45;
                           });
@@ -109,68 +118,39 @@ class _OtpScreenState extends State<OtpScreen> {
                   child: Text(
                     "Resend Code",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: isTablet ? 18 : 16,
                       color: _remainingTime == 0
-                          ? const Color(0xFF80CBB2)
-                          : Colors.grey,
+                          ? theme.primaryColor
+                          : theme.disabledColor,
                       decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                4,
-                (index) => SizedBox(
-                  width: 60,
-                  child: TextField(
-                    controller: _otpControllers[index],
-                    keyboardType: TextInputType.number,
-                    maxLength: 1,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xFF80CBB2)),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      if (value.isNotEmpty && index < 3) {
-                        FocusScope.of(context).nextFocus();
-                      } else if (value.isEmpty && index > 0) {
-                        FocusScope.of(context).previousFocus();
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
+            const SizedBox(height: 40),
+
+            // Reusable OTP Input Field
+            OtpInputField(controllers: _otpControllers, isTablet: isTablet),
+
             if (_errorMessage != null)
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
                   _errorMessage!,
-                  style: const TextStyle(color: Colors.red, fontSize: 14),
+                  style:
+                      TextStyle(color: theme.colorScheme.error, fontSize: 14),
                 ),
               ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 50),
             SizedBox(
-              width: double.infinity,
+              width: screenWidth > 600 ? 400 : double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle OTP submission
                   final otp = _otpControllers
                       .map((controller) => controller.text)
                       .join();
                   if (otp.isNotEmpty && otp.length == 4) {
-                    // Simulate OTP validation success
                     setState(() {
                       _errorMessage = null;
                     });
@@ -182,22 +162,18 @@ class _OtpScreenState extends State<OtpScreen> {
                       ),
                     );
                   } else {
-                    // Show error message
                     setState(() {
                       _errorMessage = "Please enter a valid OTP.";
                     });
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF80CBB2),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  backgroundColor: theme.primaryColor,
+                  padding: EdgeInsets.symmetric(vertical: isTablet ? 16 : 24),
                 ),
                 child: const Text(
                   "Next",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),

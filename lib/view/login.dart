@@ -1,3 +1,4 @@
+import 'package:cool_app/view/onboarding_screen.dart';
 import 'package:cool_app/view/otp_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF80CBB2),
@@ -24,7 +27,12 @@ class _LoginScreenState extends State<LoginScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const OnboardingScreen(),
+              ),
+            );
           },
         ),
       ),
@@ -32,33 +40,45 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Add the image here
+            Image.asset(
+              'assets/images/chattix.png', // Replace with your image path
+              height: 150, // Adjust the size as needed
+            ),
+            const SizedBox(height: 40),
             const Text(
               "Enter Your Phone Number",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 21,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
             const SizedBox(height: 20),
-            TextField(
-              controller: phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: "Phone Number",
-                labelStyle: TextStyle(color: Colors.green[400]),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+            Center(
+              child: SizedBox(
+                width: screenWidth > 600 ? 400 : double.infinity,
+                child: TextField(
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    labelText: "Phone Number",
+                    labelStyle: const TextStyle(
+                        color: Color.fromARGB(255, 22, 129, 94)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 112, 144, 112)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    errorText: _errorMessage,
+                  ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: Color.fromARGB(255, 55, 176, 59)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                errorText: _errorMessage, // Display error message here
               ),
             ),
             const SizedBox(height: 10),
@@ -72,38 +92,36 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle phone number validation or navigate to the OTP screen
-                  final phone = phoneController.text.trim();
-                  if (phone.isNotEmpty &&
-                      RegExp(r'^[0-9]{10}$').hasMatch(phone)) {
-                    setState(() {
-                      _errorMessage = null;
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OtpScreen(email: phone)),
-                    );
-                  } else {
-                    setState(() {
-                      _errorMessage = "Please enter a valid phone number.";
-                    });
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF80CBB2),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+            Center(
+              child: SizedBox(
+                width: screenWidth > 600 ? 400 : double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    final phone = phoneController.text.trim();
+                    if (phone.isNotEmpty &&
+                        RegExp(r'^[0-9]{10}$').hasMatch(phone)) {
+                      setState(() {
+                        _errorMessage = null;
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OtpScreen(email: phone)),
+                      );
+                    } else {
+                      setState(() {
+                        _errorMessage = "Please enter a valid phone number.";
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF80CBB2),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                   ),
-                ),
-                child: const Text(
-                  "Next",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  child: const Text(
+                    "Next",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),

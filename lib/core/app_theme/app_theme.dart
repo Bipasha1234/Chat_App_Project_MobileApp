@@ -4,26 +4,30 @@ ThemeData getApplicationTheme() {
   return ThemeData(
     // Set the primary color for the app, also used for AppBar and FloatingActionButton
     // primarySwatch: Colors.orange,
-
+    fontFamily: 'OpenSans Medium',
     // Background color for the scaffold (entire screen)
-    scaffoldBackgroundColor: Colors.grey[100],
+    scaffoldBackgroundColor: Colors.white,
+    primaryColor: const Color(0xFF80CBB2),
+    colorScheme: const ColorScheme.light(
+      primary: Color(0xFF80CBB2),
+      onPrimary: Colors.white,
 
-    // Default font family for text throughout the app
-    fontFamily: 'OpenSans Regular',
+      error: Colors.red,
 
+      // Default font family for text throughout the app
+    ),
     // Styling for Elevated Buttons in the app
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         textStyle: const TextStyle(
-          fontSize: 18,
+          fontSize: 20,
           fontWeight: FontWeight.w500,
           fontFamily:
               'OpenSans Bold', // Font style for text inside ElevatedButton
         ),
-        backgroundColor: Colors.red, // Set button background color
         shape: RoundedRectangleBorder(
           borderRadius:
-              BorderRadius.circular(10), // Rounded corners for ElevatedButton
+              BorderRadius.circular(15), // Rounded corners for ElevatedButton
         ),
       ),
     ),
@@ -49,14 +53,14 @@ ThemeData getApplicationTheme() {
     ),
 
     // Text button styling globally
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        textStyle: const TextStyle(
-          fontSize: 19,
-          fontWeight: FontWeight.normal,
-          // color: Colors.orange, // Text color for all TextButton widgets
-        ),
-      ),
-    ),
+    // textButtonTheme: TextButtonThemeData(
+    //   style: TextButton.styleFrom(
+    //     textStyle: const TextStyle(
+    //       fontSize: 19,
+    //       fontWeight: FontWeight.normal,
+    //       // color: Colors.orange, // Text color for all TextButton widgets
+    //     ),
+    //   ),
+    // ),
   );
 }

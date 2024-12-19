@@ -10,6 +10,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const greenTheme = Color(0xFF80CBB2);
+
+    // Get the screen width and height
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth >= 600; // Define tablet size (can be adjusted)
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF80CBB2), // Light green theme
@@ -27,152 +32,174 @@ class ProfileScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 60),
-
-            // Profile Avatar with Edit Icon
-            Stack(
-              children: [
-                const CircleAvatar(
-                  radius: 50,
-                  backgroundColor: greenTheme,
-                  child: Icon(
-                    Icons.person,
-                    size: 50,
-                    color: Colors.white,
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
+        child: SingleChildScrollView(
+          // Ensure scrolling for smaller screens
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Profile Avatar with Edit Icon
+              Stack(
+                children: [
+                  const CircleAvatar(
+                    radius: 50,
+                    backgroundColor: greenTheme,
+                    child: Icon(
+                      Icons.person,
+                      size: 50,
                       color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: greenTheme, width: 2),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Icon(
-                        Icons.edit,
-                        color: Color(0xFF80CBB2),
-                        size: 16,
-                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              "Bipasha Lamsal",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 4),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Gender: Female",
-                        style: TextStyle(fontSize: 16, color: Colors.black54),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: greenTheme, width: 2),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Phone: 9841459951",
-                        style: TextStyle(fontSize: 16, color: Colors.black54),
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.edit,
+                          color: Color(0xFF80CBB2),
+                          size: 16,
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.copy, color: Colors.black54),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Email: bipashalamsal@gmail.com",
-                        style: TextStyle(fontSize: 16, color: Colors.black54),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.copy, color: Colors.black54),
-                        onPressed: () {
-                          // Add copy logic here for email
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
+              const Text(
+                "Bipasha Lamsal",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Gender Section
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Gender: Female",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.copy, color: Colors.black),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
 
-            // Buttons for Edit Profile and Logout with same width
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                children: [
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF80CBB2),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      minimumSize:
-                          const Size(double.infinity, 48), // Set width to fill
+                    // Phone Number Section
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Phone: 9841459951",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.copy, color: Colors.black),
+                          onPressed: () {},
+                        ),
+                      ],
                     ),
-                    onPressed: () {
-                      // Add edit profile logic here
-                    },
-                    icon: const Icon(Icons.edit, color: Colors.white),
-                    label: const Text(
-                      "Edit Profile",
-                      style: TextStyle(color: Colors.white),
+                    const SizedBox(height: 12),
+
+                    // Email Section
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Email: bipashalamsal@gmail.com",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.copy, color: Colors.black),
+                          onPressed: () {
+                            // Add copy logic here for email
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 237, 137, 137),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      minimumSize:
-                          const Size(double.infinity, 48), // Set width to fill
-                    ),
-                    onPressed: () {
-                      // Navigate to the LoginScreen when logout is clicked
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
-                    },
-                    icon: const Icon(Icons.logout, color: Colors.white),
-                    label: const Text(
-                      "Logout",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+
+              // Buttons for Edit Profile and Logout with same width
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  children: [
+                    // Adjust button width based on screen size
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF80CBB2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: Size(
+                          isTablet
+                              ? screenWidth *
+                                  0.35 // Slightly smaller for tablet
+                              : double.infinity, // Full width for mobile
+                          60, // Reduced height
+                        ),
+                      ),
+                      onPressed: () {
+                        // Add edit profile logic here
+                      },
+                      icon: const Icon(Icons.edit, color: Colors.white),
+                      label: const Text(
+                        "Edit Profile",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 237, 137, 137),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: Size(
+                          isTablet
+                              ? screenWidth *
+                                  0.35 // Slightly smaller for tablet
+                              : double.infinity, // Full width for mobile
+                          60, // Reduced height
+                        ),
+                      ),
+                      onPressed: () {
+                        // Navigate to the LoginScreen when logout is clicked
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      },
+                      icon: const Icon(Icons.logout, color: Colors.white),
+                      label: const Text(
+                        "Logout",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: const BottomNavigationBarWidget(currentIndex: 2),
@@ -279,13 +306,13 @@ class BottomNavItem extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: isActive ? const Color(0xFF80CBB2) : Colors.black54),
+        Icon(icon, color: isActive ? const Color(0xFF80CBB2) : Colors.black),
         const SizedBox(height: 4),
         Text(
           label,
           style: TextStyle(
             fontSize: 12,
-            color: isActive ? const Color(0xFF80CBB2) : Colors.black54,
+            color: isActive ? const Color(0xFF80CBB2) : Colors.black,
           ),
         ),
       ],
