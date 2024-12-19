@@ -16,7 +16,7 @@ class ChatScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back,
               color: Colors.white), // Arrow back icon
           onPressed: () {
-            Navigator.pop(context); // Navigate back when pressed
+            // Navigate back when pressed
           },
         ),
         title: const Text(

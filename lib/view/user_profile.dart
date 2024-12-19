@@ -48,7 +48,7 @@ class UserProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: screenHeight * 0.03),
+                      SizedBox(height: screenHeight * 0.08),
 
                       // Profile Avatar with Edit Icon
                       Stack(

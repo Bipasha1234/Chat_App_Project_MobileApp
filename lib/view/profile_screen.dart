@@ -153,7 +153,7 @@ class ProfileScreen extends StatelessWidget {
                               ? screenWidth *
                                   0.35 // Slightly smaller for tablet
                               : double.infinity, // Full width for mobile
-                          60, // Reduced height
+                          50, // Reduced height
                         ),
                       ),
                       onPressed: () {
@@ -178,7 +178,7 @@ class ProfileScreen extends StatelessWidget {
                               ? screenWidth *
                                   0.35 // Slightly smaller for tablet
                               : double.infinity, // Full width for mobile
-                          60, // Reduced height
+                          50, // Reduced height
                         ),
                       ),
                       onPressed: () {
@@ -306,13 +306,13 @@ class BottomNavItem extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: isActive ? const Color(0xFF80CBB2) : Colors.black),
+        Icon(icon, color: isActive ? const Color(0xFF80CBB2) : Colors.black54),
         const SizedBox(height: 4),
         Text(
           label,
           style: TextStyle(
             fontSize: 12,
-            color: isActive ? const Color(0xFF80CBB2) : Colors.black,
+            color: isActive ? const Color(0xFF80CBB2) : Colors.black54,
           ),
         ),
       ],

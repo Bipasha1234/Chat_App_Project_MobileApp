@@ -40,15 +40,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Add the image here
-            Image.asset(
-              'assets/images/chattix.png',
-              height: 150,
-            ),
-            const SizedBox(height: 40),
+            // Image.asset(
+            //   'assets/images/chattix.png',
+            //   height: 100,
+            // ),
+            const SizedBox(height: 170),
             const Text(
               "Enter Your Phone Number",
               style: TextStyle(
