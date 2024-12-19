@@ -15,7 +15,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, String?>> onboardingData = [
     {
       "image": "assets/images/chattix.png",
-      // No title or description for this item
     },
     {
       "image": "assets/images/image1.png",
@@ -47,11 +46,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   },
                   itemCount: onboardingData.length,
                   itemBuilder: (context, index) {
-                    // Provide default empty values if title or description doesn't exist
                     final image = onboardingData[index]["image"]!;
                     final title = onboardingData[index]["title"] ?? '';
-                    final description = onboardingData[index]["description"] ?? '';
-                    
+                    final description =
+                        onboardingData[index]["description"] ?? '';
                     return OnboardingContent(
                       image: image,
                       title: title,
@@ -67,26 +65,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   (index) => buildDot(index),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ElevatedButton(
                   onPressed: _currentPage == onboardingData.length - 1
                       ? () {
-                          // Navigate to the Register Screen
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => RegisterScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => RegisterScreen()),
                           );
                         }
                       : () {
                           _pageController.nextPage(
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             curve: Curves.ease,
                           );
                         },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50),
                     backgroundColor: const Color(0xFF80CBB2),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -96,13 +94,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     _currentPage == onboardingData.length - 1
                         ? "Get Started"
                         : "Next",
-                    style: TextStyle(
-                      color: Colors.white, fontSize: 18// Set text color to white for better contrast
-                    ),
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
             ],
           ),
           Positioned(
@@ -111,10 +107,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: _currentPage != onboardingData.length - 1
                 ? TextButton(
                     onPressed: () {
-                      // Jump to the last page
                       _pageController.jumpToPage(onboardingData.length - 1);
                     },
-                    child: Text(
+                    child: const Text(
                       "Skip",
                       style: TextStyle(
                         color: Colors.black,
@@ -122,7 +117,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                   )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
           ),
         ],
       ),
@@ -134,14 +129,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       onTap: () {
         _pageController.animateToPage(
           index,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.ease,
         );
       },
       child: Container(
         height: 10,
         width: _currentPage == index ? 20 : 10,
-        margin: EdgeInsets.symmetric(horizontal: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 5),
         decoration: BoxDecoration(
           color: _currentPage == index ? const Color(0xFF80CBB2) : Colors.grey,
           borderRadius: BorderRadius.circular(5),
@@ -155,6 +150,7 @@ class OnboardingContent extends StatelessWidget {
   final String image, title, description;
 
   const OnboardingContent({
+    super.key,
     required this.image,
     required this.title,
     required this.description,
@@ -166,21 +162,21 @@ class OnboardingContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(image, height: 100),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         if (title.isNotEmpty)
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         if (description.isNotEmpty)
           Text(
             description,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.black,
             ),

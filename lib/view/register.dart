@@ -1,141 +1,114 @@
-import 'package:cool_app/view/login.dart'; // Import the OnboardingScreen
-import 'package:cool_app/view/onboarding_screen.dart';
+import 'package:cool_app/view/otp_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  String? _errorMessage;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF80CBB2), // Set AppBar color
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back, // Back arrow icon
-            color: Colors.white, // Set icon color to white
-          ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => OnboardingScreen()), // Navigate to OnboardingScreen
-            );
-          },
-        ),
+        backgroundColor: const Color(0xFF80CBB2),
         title: const Text(
-          "Register", // Title of the screen
+          "Register",
           style: TextStyle(color: Colors.white),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Create a New Account",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Enter Your Phone Number",
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-              SizedBox(height: 20),
-              
-              // Username Field
-              TextFormField(
-                controller: _usernameController,
-                decoration: InputDecoration(labelText: "Username"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a username';
-                  }
-                  return null;
-                },
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: phoneController,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                labelText: "Phone Number",
+                labelStyle:
+                    const TextStyle(color: Color.fromARGB(255, 22, 129, 94)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                      color: Color.fromARGB(255, 112, 144, 112)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                errorText: _errorMessage,
               ),
-              SizedBox(height: 20),
-
-              // Email Field
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: "Email"),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an email';
-                  }
-                  // Regular expression for validating email
-                  if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: Text(
+                "You will get an OTP via your phone number.",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
               ),
-              SizedBox(height: 20),
-
-              // Password Field
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: "Password"),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 30),
-
-              // Register Button
-              ElevatedButton(
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Proceed with registration
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Registering...')),
+                  // Handle phone number validation or navigate to the OTP screen
+                  final phone = phoneController.text.trim();
+                  if (phone.isNotEmpty &&
+                      RegExp(r'^[0-9]{10}$').hasMatch(phone)) {
+                    setState(() {
+                      _errorMessage = null;
+                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OtpScreen(email: phone)),
                     );
-                    // You can add logic to handle registration here.
+                  } else {
+                    setState(() {
+                      _errorMessage = "Please enter a valid phone number.";
+                    });
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
-                  backgroundColor: const Color(0xFF80CBB2), // Set button color to green
+                  backgroundColor: const Color(0xFF80CBB2),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(
-                  'Register',
-                  style: TextStyle(color: Colors.white,fontSize: 20), // Text color white
+                child: const Text(
+                  "Next",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
-              SizedBox(height: 20),
-
-              // Navigate to Login Screen
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to LoginScreen
-                  );
-                },
-                child: Text(
-            'Already have an account? Login',
-            style: TextStyle(
-              color: Colors.black,
-              decoration: TextDecoration.underline, // Set text color to black
             ),
-          ),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );

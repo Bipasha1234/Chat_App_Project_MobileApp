@@ -1,119 +1,214 @@
+import 'package:cool_app/view/group_screen.dart';
+import 'package:cool_app/view/profile_screen.dart';
+import 'package:cool_app/view/settings.dart';
 import 'package:flutter/material.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF80CBB2), // AppBar color
+        backgroundColor: const Color(0xFF80CBB2), // Light green theme
+        elevation: 0,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back, // Back arrow icon
-            color: Colors.white, // White color for the arrow
-          ),
+          icon: const Icon(Icons.arrow_back,
+              color: Colors.white), // Arrow back icon
           onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous screen
+            Navigator.pop(context); // Navigate back when pressed
           },
         ),
-       title: const Text(
-          "Chats", // App title
-          style: TextStyle(
-            color: Colors.white, // Set text color to white
-          ),
-        ),
+        title: const Text(
+          "Chats",
+          style: TextStyle(color: Colors.white),
+        ), // Title changed to "Chats"
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.white), // Search icon
-            onPressed: () {
-              // Add search functionality here
-            },
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: () {},
           ),
           IconButton(
-            icon: const Icon(Icons.add, color: Colors.white), // Plus icon
-            onPressed: () {
-              // Add functionality for adding items here
-            },
+            icon: const Icon(Icons.add, color: Colors.white),
+            onPressed: () {},
           ),
         ],
+        centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: 4, // Number of chat items
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/image2.jpg'), // Replace with actual image path
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              children: const [
+                ChatTile(
+                  name: "Ram Krishna Lamsal",
+                  message: "Thanks a bunch! Have a great day! 😊",
+                  time: "10:25",
+                  unreadCount: 3,
+                ),
+                ChatTile(
+                    name: "Hari Karki",
+                    message: "Great, thanks so much! 👋",
+                    time: "22:20 05/05"),
+                ChatTile(
+                    name: "Angela Kelly",
+                    message: "Appreciate it! See you soon! 🚀",
+                    time: "10:45 08/05"),
+                ChatTile(
+                  name: "Bipasha Lamsal",
+                  message: "Hooray! 🎉",
+                  time: "20:10 05/05",
+                ),
+                ChatTile(
+                  name: "Sita Karki",
+                  message: "See you soon!",
+                  time: "11:20 05/05",
+                ),
+              ],
             ),
-            title: Text(
-              'User ${index + 1}', // Username
-              style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const BottomNavigationBarWidget(),
+        ],
+      ),
+    );
+  }
+}
+
+class ChatTile extends StatelessWidget {
+  final String name;
+  final String message;
+  final String time;
+  final int unreadCount;
+
+  const ChatTile({
+    super.key,
+    required this.name,
+    required this.message,
+    required this.time,
+    this.unreadCount = 0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: CircleAvatar(
+        radius: 25,
+        backgroundColor: Colors.grey[300],
+        child: const Icon(Icons.person, color: Colors.white),
+      ),
+      title: Text(
+        name,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      ),
+      subtitle: Text(
+        message,
+        style: const TextStyle(color: Colors.black54),
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            time,
+            style: const TextStyle(fontSize: 12, color: Colors.black54),
+          ),
+          if (unreadCount > 0)
+            Container(
+              margin: const EdgeInsets.only(top: 5),
+              padding: const EdgeInsets.all(5),
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                "$unreadCount",
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
             ),
-            subtitle: Text(
-              'This is a message preview for User ${index + 1}', // Message preview
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            trailing: const Text(
-              '12:30 PM', // Time or date
-              style: TextStyle(color: Colors.grey),
-            ),
+        ],
+      ),
+    );
+  }
+}
+
+class BottomNavigationBarWidget extends StatelessWidget {
+  const BottomNavigationBarWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // "Chats" button (current screen, active)
+          const BottomNavItem(icon: Icons.chat, label: "Chats", isActive: true),
+          // Navigate to GroupScreen
+          GestureDetector(
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Tapped on User ${index + 1}')),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const GroupMessageScreen()),
               );
             },
-          );
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFF80CBB2), // Highlight color
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble), // Icon for Chats
-            label: 'Chats',
+            child: const BottomNavItem(icon: Icons.group, label: "Groups"),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group), // Icon for Groups
-            label: 'Groups',
+          // Navigate to ProfileScreen
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+            child: const BottomNavItem(icon: Icons.person, label: "Profile"),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person), // Icon for Profile
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings), // Icon for Settings
-            label: 'Settings',
+          // Navigate to SettingsScreen
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
+            },
+            child: const BottomNavItem(icon: Icons.settings, label: "Settings"),
           ),
         ],
-        onTap: (index) {
-          // Handle navigation or actions for each button
-          switch (index) {
-            case 0:
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Chats selected')),
-              );
-              break;
-            case 1:
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Groups selected')),
-              );
-              break;
-            case 2:
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Profile selected')),
-              );
-              break;
-            case 3:
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Settings selected')),
-              );
-              break;
-          }
-        },
       ),
+    );
+  }
+}
+
+class BottomNavItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isActive;
+
+  const BottomNavItem({
+    super.key,
+    required this.icon,
+    required this.label,
+    this.isActive = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: isActive ? const Color(0xFF80CBB2) : Colors.black54),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: isActive ? const Color(0xFF80CBB2) : Colors.black54,
+          ),
+        ),
+      ],
     );
   }
 }
