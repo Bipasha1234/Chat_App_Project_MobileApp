@@ -169,7 +169,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.primaryColor,
-                  padding: EdgeInsets.symmetric(vertical: isTablet ? 16 : 24),
+                  padding: EdgeInsets.symmetric(vertical: isTablet ? 16 : 14),
                 ),
                 child: const Text(
                   "Next",

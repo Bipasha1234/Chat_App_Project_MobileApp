@@ -40,15 +40,15 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Add the image here
-            Image.asset(
-              'assets/images/chattix.png', // Replace with your image path
-              height: 150, // Adjust the size as needed
-            ),
-            const SizedBox(height: 40),
+            // Image.asset(
+            //   'assets/images/chattix.png',
+            //   height: 100,
+            // ),
+            const SizedBox(height: 170),
             const Text(
               "Enter Your Phone Number",
               style: TextStyle(
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
             Center(
               child: SizedBox(
                 width: screenWidth > 600 ? 400 : double.infinity,
@@ -66,8 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     labelText: "Phone Number",
-                    labelStyle: const TextStyle(
-                        color: Color.fromARGB(255, 22, 129, 94)),
+                    labelStyle:
+                        const TextStyle(color: Color.fromARGB(255, 5, 5, 5)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 35),
             Center(
               child: SizedBox(
                 width: screenWidth > 600 ? 400 : double.infinity,

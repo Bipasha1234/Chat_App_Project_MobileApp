@@ -57,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
             Center(
               child: SizedBox(
                 width: screenWidth > 600 ? 400 : double.infinity,
@@ -66,8 +66,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     labelText: "Phone Number",
-                    labelStyle: const TextStyle(
-                        color: Color.fromARGB(255, 22, 129, 94)),
+                    labelStyle:
+                        const TextStyle(color: Color.fromARGB(255, 5, 5, 5)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -91,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 35),
             Center(
               child: SizedBox(
                 width: screenWidth > 600 ? 400 : double.infinity,
