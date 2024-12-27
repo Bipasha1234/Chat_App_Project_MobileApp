@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:cool_app/view/user_profile.dart';
+import 'package:cool_app/view/dashboard.dart';
 import 'package:flutter/material.dart';
 
-import 'otp_input_field.dart'; // Import the reusable OTP field widget
+import 'otp_input_field.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
@@ -16,7 +16,7 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final List<TextEditingController> _otpControllers =
-      List.generate(4, (index) => TextEditingController());
+      List.generate(6, (index) => TextEditingController()); // Updated to 6
   late Timer _timer;
   int _remainingTime = 60;
   String? _errorMessage;
@@ -60,10 +60,12 @@ class _OtpScreenState extends State<OtpScreen> {
         title: Text(
           "OTP Verification",
           style: TextStyle(
+            fontWeight: FontWeight.bold,
             color: theme.colorScheme.onPrimary,
             fontSize: isTablet ? 24 : 20,
           ),
         ),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           color: theme.colorScheme.onPrimary,
@@ -82,17 +84,14 @@ class _OtpScreenState extends State<OtpScreen> {
               "Enter the provided OTP",
               style: TextStyle(
                 fontSize: isTablet ? 24 : 21,
-                fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onSurface,
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 10),
             Text(
               "Sent to: ${widget.email}",
               style: TextStyle(
-                fontSize: isTablet ? 18 : 16,
-                color: theme.colorScheme.onSurface,
-              ),
+                  fontSize: isTablet ? 18 : 16, color: Colors.grey[600]),
             ),
             const SizedBox(height: 30),
             Row(
@@ -101,9 +100,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 Text(
                   "0:${_remainingTime.toString().padLeft(2, '0')}",
                   style: TextStyle(
-                    fontSize: isTablet ? 20 : 16,
-                    color: theme.colorScheme.onSurface,
-                  ),
+                      fontSize: isTablet ? 20 : 16, color: Colors.grey[600]),
                 ),
                 const SizedBox(width: 10),
                 GestureDetector(
@@ -142,35 +139,16 @@ class _OtpScreenState extends State<OtpScreen> {
                       TextStyle(color: theme.colorScheme.error, fontSize: 14),
                 ),
               ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
             SizedBox(
               width: screenWidth > 600 ? 400 : double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  final otp = _otpControllers
-                      .map((controller) => controller.text)
-                      .join();
-                  if (otp.isNotEmpty && otp.length == 4) {
-                    setState(() {
-                      _errorMessage = null;
-                    });
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const UserProfileScreen(),
-                      ),
-                    );
-                  } else {
-                    setState(() {
-                      _errorMessage = "Please enter a valid OTP.";
-                    });
-                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ChatScreen()),
+                  );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.primaryColor,
-                  padding: EdgeInsets.symmetric(vertical: isTablet ? 16 : 14),
-                ),
                 child: const Text(
                   "Next",
                   style: TextStyle(color: Colors.white),

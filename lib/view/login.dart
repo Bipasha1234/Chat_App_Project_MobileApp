@@ -1,131 +1,173 @@
-import 'package:cool_app/view/onboarding_screen.dart';
-import 'package:cool_app/view/otp_screen.dart';
+import 'package:cool_app/view/forgot_password.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController phoneController = TextEditingController();
-  String? _errorMessage;
+class _SignInScreenState extends State<SignInScreen> {
+  bool _rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF80CBB2),
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text(
           "Login",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        centerTitle: true,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const OnboardingScreen(),
-              ),
-            );
+            Navigator.pushNamed(context, '/signup'); // Navigate to SignUpScreen
           },
         ),
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Add the image here
-            // Image.asset(
-            //   'assets/images/chattix.png',
-            //   height: 100,
-            // ),
-            const SizedBox(height: 170),
-            const Text(
-              "Enter Your Phone Number",
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 28),
-            Center(
-              child: SizedBox(
-                width: screenWidth > 600 ? 400 : double.infinity,
-                child: TextField(
-                  controller: phoneController,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    labelText: "Phone Number",
-                    labelStyle:
-                        const TextStyle(color: Color.fromARGB(255, 5, 5, 5)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 112, 144, 112)),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    errorText: _errorMessage,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Center(
-              child: Text(
-                "You will get an OTP via your phone number.",
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Sign in your account",
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
                 ),
               ),
-            ),
-            const SizedBox(height: 35),
-            Center(
-              child: SizedBox(
-                width: screenWidth > 600 ? 400 : double.infinity,
+              const SizedBox(height: 20),
+              // Email Field
+              const TextField(
+                decoration: InputDecoration(
+                  labelText: "Email",
+                ),
+              ),
+
+              const SizedBox(height: 15),
+
+              // Password Field
+              const TextField(
+                decoration: InputDecoration(
+                  labelText: "Password",
+                ),
+              ),
+              const SizedBox(height: 25),
+
+              SizedBox(
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    final phone = phoneController.text.trim();
-                    if (phone.isNotEmpty &&
-                        RegExp(r'^[0-9]{10}$').hasMatch(phone)) {
-                      setState(() {
-                        _errorMessage = null;
-                      });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OtpScreen(email: phone)),
-                      );
-                    } else {
-                      setState(() {
-                        _errorMessage = "Please enter a valid phone number.";
-                      });
-                    }
+                    Navigator.pushNamed(
+                        context, '/chat'); // Navigate to ChatScreen
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF80CBB2),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                  ),
                   child: const Text(
-                    "Next",
+                    "Sign In",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+
+              // OR Divider
+              Row(
+                children: [
+                  Expanded(
+                    child: Divider(
+                      color: Colors.grey[400],
+                      thickness: 1,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      "OR",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  Expanded(
+                    child: Divider(
+                      color: Colors.grey[400],
+                      thickness: 1,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              // Sign-In with Code Button
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, '/emailOtpScreen'); // Navigate to OtpScreen
+                  },
+                  child: const Text(
+                    "Sign In with a Code",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 10, 10, 10),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Forgot Password Button
+              TextButton(
+                onPressed: () {
+                  // Navigate to the ForgotPasswordScreen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ForgotPasswordScreen()),
+                  );
+                },
+                child: const Text(
+                  "Forgot Password?",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 92, 93, 92),
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+
+              // Remember Me Checkbox
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Checkbox(
+                    value: _rememberMe,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _rememberMe = value!;
+                      });
+                    },
+                    activeColor: const Color(0xFF80CBB2),
+                  ),
+                  const Text(
+                    "Remember Me",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

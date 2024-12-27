@@ -13,11 +13,11 @@ class ProfileScreen extends StatelessWidget {
 
     // Get the screen width and height
     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth >= 600; // Define tablet size (can be adjusted)
+    final isTablet = screenWidth >= 600;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF80CBB2), // Light green theme
+        backgroundColor: const Color(0xFF80CBB2),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -186,7 +186,7 @@ class ProfileScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoginScreen()),
+                              builder: (context) => const SignInScreen()),
                         );
                       },
                       icon: const Icon(Icons.logout, color: Colors.white),

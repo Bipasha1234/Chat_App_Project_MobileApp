@@ -13,42 +13,42 @@ class OtpInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(
-        4,
-        (index) => Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 5.0), // Reduced horizontal padding
-          child: SizedBox(
-            width: isTablet
-                ? MediaQuery.of(context).size.width * 0.1
-                : MediaQuery.of(context).size.width * 0.12, // Adjusted width
-            child: TextField(
-              controller: controllers[index],
-              keyboardType: TextInputType.number,
-              maxLength: 1,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                counterText: "",
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: Colors.black), // Black border
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: Colors.black), // Black border
-                  borderRadius: BorderRadius.circular(12),
+        controllers
+            .length, // Automatically create as many fields as controllers
+        (index) => SizedBox(
+          width: isTablet ? 50 : 40,
+          child: TextField(
+            controller: controllers[index],
+            keyboardType: TextInputType.number,
+            textAlign: TextAlign.center,
+            maxLength: 1,
+            decoration: InputDecoration(
+              counterText: '', // Removes the character counter
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  color: Color.fromARGB(
+                      255, 218, 217, 217), // Light grey border color
+                  width: 1,
                 ),
               ),
-              onChanged: (value) {
-                if (value.isNotEmpty && index < 3) {
-                  FocusScope.of(context).nextFocus();
-                } else if (value.isEmpty && index > 0) {
-                  FocusScope.of(context).previousFocus();
-                }
-              },
+              filled: true,
+              fillColor: const Color.fromARGB(
+                  255, 247, 244, 244), // Light background color
+              contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              // Optional: add dashed border effect (You can add this in custom design)
+              // Using BoxDecoration to add dashed borders is possible too.
             ),
+            onChanged: (value) {
+              if (value.isNotEmpty && index < controllers.length - 1) {
+                FocusScope.of(context).nextFocus(); // Move to the next field
+              } else if (value.isEmpty && index > 0) {
+                FocusScope.of(context)
+                    .previousFocus(); // Move to the previous field
+              }
+            },
           ),
         ),
       ),
