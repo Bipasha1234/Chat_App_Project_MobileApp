@@ -13,65 +13,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _reEnterPasswordController = TextEditingController();
 
   String storedPassword =
-      "currentPassword123"; // Replace with actual stored password
-
-  void _changePassword() {
-    String currentPassword = _currentPasswordController.text;
-    String newPassword = _newPasswordController.text;
-    String reEnterPassword = _reEnterPasswordController.text;
-
-    if (currentPassword != storedPassword) {
-      _showErrorDialog("Current password is incorrect!");
-    } else if (newPassword != reEnterPassword) {
-      _showErrorDialog("New passwords do not match!");
-    } else if (newPassword.length < 6) {
-      _showErrorDialog("New password must be at least 6 characters long!");
-    } else {
-      // Update password logic here (e.g., in database)
-      _showSuccessDialog("Password successfully changed!");
-    }
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Error"),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showSuccessDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Success"),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Optionally, navigate to login screen or home screen after success
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+      "currentPassword123"; // Replace with actual stored passwor
 
   @override
   Widget build(BuildContext context) {
