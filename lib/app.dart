@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Navigation Example',
+      title: 'Chat App',
       theme: getApplicationTheme(),
       initialRoute: '/',
       routes: {

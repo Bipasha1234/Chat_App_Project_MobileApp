@@ -14,17 +14,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<Map<String, String?>> onboardingData = [
     {
+      "title": "Welcome to Chattix App - A Chat App",
       "image": "assets/images/chattix.png",
     },
     {
       "image": "assets/images/image1.png",
-      "title": "Group Chatting",
-      "description": "Connect with multiple members in group chats.",
+      "title": "Instant Messaging",
+      "description": "Chat with friends and family in real time."
     },
     {
       "image": "assets/images/image4.png",
-      "title": "Communicate Easily",
-      "description": "Send and receive messages instantly.",
+      "title": "Share Moments",
+      "description": " Share photos, videos, and more with your loved ones.",
+    },
+    {
+      "image": "assets/images/check.png",
+      "title": "Let’s Get Started!",
+      "description": "Create an account and set your profile to begin.",
     },
   ];
 
@@ -164,15 +170,18 @@ class OnboardingContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset(image, height: 100),
+        Image.asset(image, height: 120), // Image at the top
         const SizedBox(height: 20),
         if (title.isNotEmpty)
           Text(
             title,
+            textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           ),
         const SizedBox(height: 10),
