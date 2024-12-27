@@ -1,8 +1,8 @@
 import 'package:cool_app/view/dashboard.dart';
 import 'package:flutter/material.dart';
 
-import 'group_screen.dart'; // Import GroupMessageScreen for navigation // Import ChatScreen for navigation
-import 'profile_screen.dart'; // Import ProfileScreen for navigation
+import 'group_screen.dart';
+import 'profile_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -11,12 +11,12 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF80CBB2), // Light green theme
+        backgroundColor: const Color(0xFF80CBB2),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
+            Navigator.pop(context);
           },
         ),
         title: const Text(

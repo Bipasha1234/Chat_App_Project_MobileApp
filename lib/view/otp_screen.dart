@@ -16,7 +16,7 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final List<TextEditingController> _otpControllers =
-      List.generate(6, (index) => TextEditingController()); // Updated to 6
+      List.generate(6, (index) => TextEditingController());
   late Timer _timer;
   int _remainingTime = 60;
   String? _errorMessage;

@@ -11,7 +11,6 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const greenTheme = Color(0xFF80CBB2);
 
-    // Get the screen width and height
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth >= 600;
 
@@ -125,9 +124,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         IconButton(
                           icon: const Icon(Icons.copy, color: Colors.black),
-                          onPressed: () {
-                            // Add copy logic here for email
-                          },
+                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -141,7 +138,6 @@ class ProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   children: [
-                    // Adjust button width based on screen size
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF80CBB2),
@@ -156,9 +152,7 @@ class ProfileScreen extends StatelessWidget {
                           50, // Reduced height
                         ),
                       ),
-                      onPressed: () {
-                        // Add edit profile logic here
-                      },
+                      onPressed: () {},
                       icon: const Icon(Icons.edit, color: Colors.white),
                       label: const Text(
                         "Edit Profile",
@@ -182,7 +176,6 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        // Navigate to the LoginScreen when logout is clicked
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

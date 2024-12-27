@@ -12,8 +12,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _newPasswordController = TextEditingController();
   final _reEnterPasswordController = TextEditingController();
 
-  String storedPassword =
-      "currentPassword123"; // Replace with actual stored passwor
+  String storedPassword = "currentPassword123";
 
   @override
   Widget build(BuildContext context) {

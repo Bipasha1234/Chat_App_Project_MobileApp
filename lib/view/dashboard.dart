@@ -140,9 +140,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          // "Chats" button (current screen, active)
           const BottomNavItem(icon: Icons.chat, label: "Chats", isActive: true),
-          // Navigate to GroupScreen
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -153,7 +151,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
             },
             child: const BottomNavItem(icon: Icons.group, label: "Groups"),
           ),
-          // Navigate to ProfileScreen
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -163,7 +160,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
             },
             child: const BottomNavItem(icon: Icons.person, label: "Profile"),
           ),
-          // Navigate to SettingsScreen
           GestureDetector(
             onTap: () {
               Navigator.push(

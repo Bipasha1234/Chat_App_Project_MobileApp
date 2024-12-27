@@ -71,9 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
-                  width: screenWidth > 600
-                      ? 400
-                      : double.infinity, // Adjusted width
+                  width: screenWidth > 600 ? 400 : double.infinity,
                   child: ElevatedButton(
                     onPressed: _currentPage == onboardingData.length - 1
                         ? () {
@@ -90,9 +88,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             );
                           },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(200, 45), // Adjusted size
+                      minimumSize: const Size(200, 45),
                       backgroundColor: const Color(0xFF80CBB2),
-
                       padding: const EdgeInsets.symmetric(
                           vertical: 12, horizontal: 24),
                     ),

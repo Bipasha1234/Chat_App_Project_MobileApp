@@ -28,7 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushNamed(context, '/signup'); // Navigate to SignUpScreen
+            Navigator.pushNamed(context, '/signup');
           },
         ),
       ),
@@ -70,8 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, '/chat'); // Navigate to ChatScreen
+                    Navigator.pushNamed(context, '/chat');
                   },
                   child: const Text(
                     "Sign In",
@@ -81,7 +80,6 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 20),
 
-              // OR Divider
               Row(
                 children: [
                   Expanded(
@@ -107,18 +105,24 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Sign-In with Code Button
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, '/emailOtpScreen'); // Navigate to OtpScreen
+                    Navigator.pushNamed(context, '/emailOtpScreen');
                   },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Color(0xFF80CBB2)),
+                    padding: const EdgeInsets.symmetric(vertical: 17),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(35),
+                    ),
+                  ),
                   child: const Text(
                     "Sign In with a Code",
                     style: TextStyle(
                       color: Color.fromARGB(255, 10, 10, 10),
+                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -128,7 +132,6 @@ class _SignInScreenState extends State<SignInScreen> {
               // Forgot Password Button
               TextButton(
                 onPressed: () {
-                  // Navigate to the ForgotPasswordScreen
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -144,7 +147,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
 
-              // Remember Me Checkbox
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

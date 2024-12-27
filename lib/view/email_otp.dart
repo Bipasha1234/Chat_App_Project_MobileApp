@@ -8,8 +8,7 @@ class EmailOtpScreen extends StatefulWidget {
 }
 
 class _EmailOtpScreenState extends State<EmailOtpScreen> {
-  final TextEditingController _emailController =
-      TextEditingController(); // Controller for email input
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class _EmailOtpScreenState extends State<EmailOtpScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushNamed(context, '/signin'); // Navigate to SignUpScreen
+            Navigator.pushNamed(context, '/signin');
           },
         ),
       ),
@@ -51,7 +50,7 @@ class _EmailOtpScreenState extends State<EmailOtpScreen> {
               const SizedBox(height: 20),
               // Email Field
               TextField(
-                controller: _emailController, // Set controller here
+                controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: "Email",
                 ),

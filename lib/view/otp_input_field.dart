@@ -15,8 +15,7 @@ class OtpInputField extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(
-        controllers
-            .length, // Automatically create as many fields as controllers
+        controllers.length,
         (index) => SizedBox(
           width: isTablet ? 50 : 40,
           child: TextField(
@@ -25,28 +24,23 @@ class OtpInputField extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLength: 1,
             decoration: InputDecoration(
-              counterText: '', // Removes the character counter
+              counterText: '',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: const BorderSide(
-                  color: Color.fromARGB(
-                      255, 218, 217, 217), // Light grey border color
+                  color: Color.fromARGB(255, 218, 217, 217),
                   width: 1,
                 ),
               ),
               filled: true,
-              fillColor: const Color.fromARGB(
-                  255, 247, 244, 244), // Light background color
+              fillColor: const Color.fromARGB(255, 247, 244, 244),
               contentPadding: const EdgeInsets.symmetric(vertical: 14),
-              // Optional: add dashed border effect (You can add this in custom design)
-              // Using BoxDecoration to add dashed borders is possible too.
             ),
             onChanged: (value) {
               if (value.isNotEmpty && index < controllers.length - 1) {
-                FocusScope.of(context).nextFocus(); // Move to the next field
+                FocusScope.of(context).nextFocus();
               } else if (value.isEmpty && index > 0) {
-                FocusScope.of(context)
-                    .previousFocus(); // Move to the previous field
+                FocusScope.of(context).previousFocus();
               }
             },
           ),

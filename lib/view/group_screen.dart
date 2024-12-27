@@ -10,7 +10,7 @@ class GroupMessageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF80CBB2), // Light green theme
+        backgroundColor: const Color(0xFF80CBB2),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -123,7 +123,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (currentIndex != 0) {
-                // Navigate to the ChatScreen
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatScreen()),
@@ -139,7 +138,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (currentIndex != 1) {
-                // Navigate to the GroupMessageScreen
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

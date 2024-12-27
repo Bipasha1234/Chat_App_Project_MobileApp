@@ -29,10 +29,10 @@ ThemeData getApplicationTheme() {
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
-          backgroundColor: const Color(0xFF80CBB2), // Default background color
+          backgroundColor: const Color(0xFF80CBB2),
           padding: const EdgeInsets.symmetric(vertical: 15),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5), // Default corner radius
+            borderRadius: BorderRadius.circular(5),
           ),
         ),
       ));

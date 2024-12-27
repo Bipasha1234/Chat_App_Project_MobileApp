@@ -6,8 +6,6 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     final isTablet = screenWidth > 600;
     final maxWidth = isTablet ? 500.0 : double.infinity;
 
@@ -23,7 +21,10 @@ class UserProfileScreen extends StatelessWidget {
         ),
         title: const Text(
           "Set Profile",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -32,19 +33,17 @@ class UserProfileScreen extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxWidth),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0)
-                  .copyWith(top: screenHeight * 0.02),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: screenHeight * 0.08),
-
                   // Profile Avatar with Edit Icon
                   Stack(
                     children: [
                       CircleAvatar(
                         radius: isTablet ? 70.0 : 50.0,
-                        backgroundColor: Theme.of(context).primaryColorLight,
+                        backgroundColor: Theme.of(context).primaryColor,
                         child: Icon(
                           Icons.person,
                           size: isTablet ? 70.0 : 50.0,
@@ -74,18 +73,15 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: screenHeight * 0.03),
+                  const SizedBox(height: 30),
 
-                  // Name Field
                   _buildTextField("Name"),
-                  SizedBox(height: screenHeight * 0.02),
+                  const SizedBox(height: 20),
 
-                  // Phone Number Field
                   _buildTextField("Phone Number",
                       keyboardType: TextInputType.phone),
-                  SizedBox(height: screenHeight * 0.02),
+                  const SizedBox(height: 20),
 
-                  // Gender Dropdown
                   DropdownButtonFormField<String>(
                     decoration: const InputDecoration(
                       labelText: "Gender",
@@ -95,16 +91,13 @@ class UserProfileScreen extends StatelessWidget {
                       DropdownMenuItem(value: "Female", child: Text("Female")),
                       DropdownMenuItem(value: "Other", child: Text("Other")),
                     ],
-                    onChanged: (value) {
-                      // Handle gender selection
-                    },
+                    onChanged: (value) {},
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  const SizedBox(height: 20),
 
-                  // Email Field
                   _buildTextField("Email",
                       keyboardType: TextInputType.emailAddress),
-                  SizedBox(height: screenHeight * 0.04),
+                  const SizedBox(height: 40),
 
                   SizedBox(
                     width: double.infinity,

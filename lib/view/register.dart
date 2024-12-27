@@ -35,33 +35,25 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              // Email Field
               const TextField(
                 decoration: InputDecoration(labelText: "Email"),
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 15),
-
-              // Password Field
               const TextField(
                 obscureText: true,
                 decoration: InputDecoration(labelText: "Password"),
               ),
               const SizedBox(height: 15),
-
-              // Confirm Password Field
               const TextField(
                 obscureText: true,
                 decoration: InputDecoration(labelText: "Confirm Password"),
               ),
               const SizedBox(height: 25),
-
-              // Sign-Up Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Navigate to UserProfileScreen
                     Navigator.pushNamed(context, '/userProfile');
                   },
                   style: ElevatedButton.styleFrom(
@@ -78,14 +70,11 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Already have an account? Sign In
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, '/signin'); // Navigate to SignInScreen
+                    Navigator.pushNamed(context, '/signin');
                   },
                   child: const Text(
                     "Already have an account? Sign In",
