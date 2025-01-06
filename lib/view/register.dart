@@ -1,4 +1,8 @@
+import 'package:cool_app/bloc/register_bloc.dart';
+import 'package:cool_app/bloc/register_event.dart';
+import 'package:cool_app/bloc/register_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -19,75 +23,85 @@ class SignUpScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         elevation: 0,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                "Sign up your account",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 20),
-              const TextField(
-                decoration: InputDecoration(labelText: "Email"),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 15),
-              const TextField(
-                obscureText: true,
-                decoration: InputDecoration(labelText: "Password"),
-              ),
-              const SizedBox(height: 15),
-              const TextField(
-                obscureText: true,
-                decoration: InputDecoration(labelText: "Confirm Password"),
-              ),
-              const SizedBox(height: 25),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/userProfile');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  child: const Text(
-                    "Sign Up",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/signin');
-                  },
-                  child: const Text(
-                    "Already have an account? Sign In",
+      body: BlocBuilder<RegisterBloc, RegisterState>(
+        builder: (context, state) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Sign up your account",
                     style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
                       color: Colors.black,
-                      fontSize: 14,
                     ),
                   ),
-                ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    onChanged: (value) {
+                      context.read<RegisterBloc>().add(UpdateEmail(value));
+                    },
+                    decoration: const InputDecoration(labelText: "Email"),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 15),
+                  TextField(
+                    onChanged: (value) {
+                      context.read<RegisterBloc>().add(UpdatePassword(value));
+                    },
+                    obscureText: true,
+                    decoration: const InputDecoration(labelText: "Password"),
+                  ),
+                  const SizedBox(height: 15),
+                  TextField(
+                    onChanged: (value) {
+                      context
+                          .read<RegisterBloc>()
+                          .add(UpdateConfirmPassword(value));
+                    },
+                    obscureText: true,
+                    decoration:
+                        const InputDecoration(labelText: "Confirm Password"),
+                  ),
+                  const SizedBox(height: 25),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context.read<RegisterBloc>().add(SubmitRegistration());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: state.isSubmitting
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                              "Sign Up",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                    ),
+                  ),
+                  if (state.errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        state.errorMessage!,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
