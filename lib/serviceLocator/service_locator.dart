@@ -1,3 +1,5 @@
+import 'package:cool_app/bloc/chat_bloc.dart';
+import 'package:cool_app/bloc/onboarding_bloc.dart';
 import 'package:cool_app/bloc/register_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -9,4 +11,6 @@ Future<void> initDependencies() async {
 
 void _initBloc() {
   serviceLocator.registerLazySingleton(() => RegisterBloc());
+  serviceLocator.registerLazySingleton(() => ChatBloc());
+  serviceLocator.registerLazySingleton(() => OnboardingBloc());
 }
