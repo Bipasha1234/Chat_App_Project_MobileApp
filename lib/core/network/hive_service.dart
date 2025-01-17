@@ -7,7 +7,7 @@ class HiveService {
   static Future<void> init() async {
     // Initialize the database
     var directory = await getApplicationDocumentsDirectory();
-    var path = '${directory.path}softwarica_user_management.db';
+    var path = '${directory.path}chat_app.db';
 
     Hive.init(path);
 
