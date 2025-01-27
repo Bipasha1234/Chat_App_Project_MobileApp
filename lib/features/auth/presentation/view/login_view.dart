@@ -16,7 +16,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF80CBB2), // More defined brand color
+        backgroundColor: const Color(0xFF80CBB2),
         elevation: 0,
         leading: null,
         title: const Text(
@@ -121,8 +121,7 @@ class LoginView extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          backgroundColor:
-                              const Color(0xFF80CBB2), // Same as app bar
+                          backgroundColor: const Color(0xFF80CBB2),
                           shadowColor: Colors.grey.withOpacity(0.3),
                           elevation: 5,
                         ),

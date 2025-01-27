@@ -15,7 +15,6 @@ import 'package:get_it/get_it.dart';
 final getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // First initialize hive service
   await _initHiveService();
   await _initApiService();
 
@@ -35,7 +34,6 @@ _initApiService() {
 }
 
 _initRegisterDependencies() {
-  // init local data source
   getIt.registerLazySingleton(
     () => AuthLocalDataSource(getIt<HiveService>()),
   );
@@ -44,7 +42,6 @@ _initRegisterDependencies() {
     () => AuthRemoteDatasource(getIt<Dio>()),
   );
 
-  // init local repository
   getIt.registerLazySingleton(
     () => AuthLocalRepository(getIt<AuthLocalDataSource>()),
   );
@@ -53,7 +50,6 @@ _initRegisterDependencies() {
     () => AuthRemoteRepository(getIt<AuthRemoteDatasource>()),
   );
 
-  // register use usecase
   getIt.registerLazySingleton<RegisterUseCase>(
     () => RegisterUseCase(
       getIt<AuthRemoteRepository>(),
