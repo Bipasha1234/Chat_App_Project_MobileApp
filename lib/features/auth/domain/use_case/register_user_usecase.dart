@@ -6,27 +6,27 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 class RegisterUserParams extends Equatable {
-  final String fullName;
   final String email;
+  final String fullName;
   final String password;
-  final String? image;
+  final String? profilePic;
 
   const RegisterUserParams({
-    required this.fullName,
     required this.email,
+    required this.fullName,
     required this.password,
-    this.image,
+    this.profilePic,
   });
 
   // Initial Constructor
   const RegisterUserParams.initial()
-      : fullName = '',
-        email = '',
+      : email = '',
+        fullName = '',
         password = '',
-        image = null;
+        profilePic = null;
 
   @override
-  List<Object?> get props => [fullName, email, password, image];
+  List<Object?> get props => [email, fullName, password, profilePic];
 }
 
 class RegisterUseCase implements UsecaseWithParams<void, RegisterUserParams> {
@@ -38,10 +38,10 @@ class RegisterUseCase implements UsecaseWithParams<void, RegisterUserParams> {
   Future<Either<Failure, void>> call(RegisterUserParams params) {
     // Convert RegisterUserParams to AuthEntity
     final authEntity = AuthEntity(
-      fullName: params.fullName,
       email: params.email,
+      fullName: params.fullName,
       password: params.password,
-      image: params.image,
+      profilePic: params.profilePic,
     );
     return repository.registerUser(authEntity);
   }

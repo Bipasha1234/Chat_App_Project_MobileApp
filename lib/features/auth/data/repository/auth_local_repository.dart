@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cool_app/core/error/failure.dart';
-import 'package:cool_app/features/auth/data/data_source/local_data_source/auth_local_datasource.dart';
+import 'package:cool_app/features/auth/data/data_source/auth_local_datasource.dart';
 import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
 import 'package:cool_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:dartz/dartz.dart';

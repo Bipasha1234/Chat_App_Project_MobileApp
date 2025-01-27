@@ -1,27 +1,37 @@
+import 'package:cool_app/core/network/api_service.dart';
 import 'package:cool_app/core/network/hive_service.dart';
-import 'package:cool_app/features/auth/data/data_source/local_data_source/auth_local_datasource.dart';
-import 'package:cool_app/features/auth/data/repository/auth_local_repository/auth_local_repository.dart';
+import 'package:cool_app/features/auth/data/data_source/auth_local_datasource.dart';
+import 'package:cool_app/features/auth/data/data_source/auth_remote_datasource.dart';
+import 'package:cool_app/features/auth/data/repository/auth_local_repository.dart';
+import 'package:cool_app/features/auth/data/repository/auth_remote_repository.dart';
 import 'package:cool_app/features/auth/domain/use_case/login_usecase.dart';
 import 'package:cool_app/features/auth/domain/use_case/register_user_usecase.dart';
 import 'package:cool_app/features/auth/presentation/view_model/login/login_bloc.dart';
+import 'package:cool_app/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:cool_app/features/home/presentation/view_model/home_cubit.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-
-import '../../features/auth/presentation/view_model/signup/register_bloc.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
   // First initialize hive service
   await _initHiveService();
+  await _initApiService();
 
+  await _initHomeDependencies();
   await _initRegisterDependencies();
   await _initLoginDependencies();
-  await _initHomeDependencies();
 }
 
 _initHiveService() {
   getIt.registerLazySingleton<HiveService>(() => HiveService());
+}
+
+_initApiService() {
+  getIt.registerLazySingleton<Dio>(
+    () => ApiService(Dio()).dio,
+  );
 }
 
 _initRegisterDependencies() {
@@ -30,15 +40,23 @@ _initRegisterDependencies() {
     () => AuthLocalDataSource(getIt<HiveService>()),
   );
 
+  getIt.registerLazySingleton<AuthRemoteDatasource>(
+    () => AuthRemoteDatasource(getIt<Dio>()),
+  );
+
   // init local repository
   getIt.registerLazySingleton(
     () => AuthLocalRepository(getIt<AuthLocalDataSource>()),
   );
 
+  getIt.registerLazySingleton(
+    () => AuthRemoteRepository(getIt<AuthRemoteDatasource>()),
+  );
+
   // register use usecase
   getIt.registerLazySingleton<RegisterUseCase>(
     () => RegisterUseCase(
-      getIt<AuthLocalRepository>(),
+      getIt<AuthRemoteRepository>(),
     ),
   );
 
@@ -58,7 +76,7 @@ _initHomeDependencies() async {
 _initLoginDependencies() async {
   getIt.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(
-      getIt<AuthLocalRepository>(),
+      getIt<AuthRemoteRepository>(),
     ),
   );
 

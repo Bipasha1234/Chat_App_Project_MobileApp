@@ -11,14 +11,14 @@ class LoadCoursesAndBatches extends RegisterEvent {}
 
 class RegisterUser extends RegisterEvent {
   final BuildContext context;
-  final String fullName;
   final String email;
+  final String fullName;
   final String password;
 
   const RegisterUser({
     required this.context,
-    required this.fullName,
     required this.email,
+    required this.fullName,
     required this.password,
   });
 }

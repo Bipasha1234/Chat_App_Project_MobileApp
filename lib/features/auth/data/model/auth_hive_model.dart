@@ -17,14 +17,14 @@ class AuthHiveModel extends Equatable {
   @HiveField(3)
   final String password;
   @HiveField(4)
-  final String? image;
+  final String? profilePic;
 
   AuthHiveModel({
     String? userId,
     required this.fullName,
     required this.email,
     required this.password,
-    this.image,
+    this.profilePic,
   }) : userId = userId ?? const Uuid().v4();
 
   // Initial Constructor
@@ -33,7 +33,7 @@ class AuthHiveModel extends Equatable {
         fullName = '',
         email = '',
         password = '',
-        image = null;
+        profilePic = null;
 
   // From Entity
   factory AuthHiveModel.fromEntity(AuthEntity entity) {
@@ -42,7 +42,7 @@ class AuthHiveModel extends Equatable {
       fullName: entity.fullName,
       email: entity.email,
       password: entity.password,
-      image: entity.image,
+      profilePic: entity.profilePic,
     );
   }
 
@@ -53,10 +53,10 @@ class AuthHiveModel extends Equatable {
       fullName: fullName,
       email: email,
       password: password,
-      image: image,
+      profilePic: profilePic,
     );
   }
 
   @override
-  List<Object?> get props => [userId, fullName, email, password, image];
+  List<Object?> get props => [userId, fullName, email, password, profilePic];
 }
