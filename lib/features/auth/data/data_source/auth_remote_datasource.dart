@@ -66,36 +66,35 @@ class AuthRemoteDatasource implements IAuthDataSource {
   }
 
   @override
-  Future<String> uploadProfilePicture(File file) {
-    // TODO: implement uploadProfilePicture
-    throw UnimplementedError();
+  Future<String> uploadProfilePicture(File file) async {
+    try {
+      String fileName = file.path.split('/').last;
+      FormData formData = FormData.fromMap(
+        {
+          'profilePicture': await MultipartFile.fromFile(
+            file.path,
+            filename: fileName,
+          ),
+        },
+      );
+
+      Response response = await _dio.post(
+        ApiEndpoints.uploadImage,
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        // Extract the image name from the response
+        final str = response.data['data'];
+
+        return str;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
-
-  // @override
-  // Future<String> uploadProfilePicture(File file) async {
-  //   try {
-  //     String fileName = file.path.split('/').last;
-  //     FormData formData = FormData.fromMap({
-  //       "file": await MultipartFile.fromFile(file.path, filename: fileName),
-  //     });
-
-  //     Response response = await _dio.post(
-  //       ApiEndpoints.uploadprofilePic,
-  //       data: formData,
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final profilePicUrl = response.data['profilePicUrl'];
-  //       return profilePicUrl;
-  //     } else {
-  //       throw Exception(
-  //           'Failed to upload profile picture. Status code: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     if (e is DioException) {
-  //       throw Exception('Dio error occurred: ${e.message}');
-  //     }
-  //     throw Exception('An error occurred while uploading profile picture: $e');
-  //   }
-  // }
 }

@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cool_app/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -16,6 +20,43 @@ class _RegisterViewState extends State<RegisterView> {
   final _passwordController = TextEditingController();
 
   final _gap = const SizedBox(height: 20);
+
+  Future<void> checkCameraPermission() async {
+    if (await Permission.camera.request().isRestricted ||
+        await Permission.camera.request().isDenied) {
+      await Permission.camera.request();
+    }
+  }
+
+  File? _img;
+  Future _browseImage(ImageSource imageSource) async {
+    try {
+      final image = await ImagePicker().pickImage(source: imageSource);
+      if (image != null) {
+        setState(() {
+          _img = File(image.path);
+          // Send image to server
+          context.read<RegisterBloc>().add(
+                UploadImage(file: _img!),
+              );
+        });
+      } else {
+        return;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  // Future<void> saveUserData(
+  //     String email, String fullName, String imageName) async {
+  //   final sharedPreferences = await SharedPreferences.getInstance();
+  //   await sharedPreferences.setString('email', email);
+  //   await sharedPreferences.setString('fullName', fullName);
+  //   await sharedPreferences.setString('profilePic', imageName);
+
+  //   print('Profile Pic URL saved: $imageName'); // Debugging line
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +102,60 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                       ),
                       _gap,
+                      // Profile Image Section
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            backgroundColor: Colors.grey[300],
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            builder: (context) => Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  ElevatedButton.icon(
+                                    onPressed: () {
+                                      checkCameraPermission();
+                                      _browseImage(ImageSource.camera);
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(Icons.camera),
+                                    label: const Text('Camera'),
+                                  ),
+                                  ElevatedButton.icon(
+                                    onPressed: () {
+                                      _browseImage(ImageSource.gallery);
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(Icons.image),
+                                    label: const Text('Gallery'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        child: SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: _img != null
+                                ? FileImage(_img!)
+                                : const AssetImage('assets/images/user.png')
+                                    as ImageProvider,
+                          ),
+                        ),
+                      ),
+                      _gap,
+                      // Text Fields
                       TextFormField(
                         key: const ValueKey('email'),
                         controller: _emailController,
@@ -171,14 +266,25 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            final registerState =
+                                context.read<RegisterBloc>().state;
+                            final imageName = registerState.imageName ?? '';
                             context.read<RegisterBloc>().add(
                                   RegisterUser(
                                     context: context,
                                     fullName: _fullNameController.text,
                                     email: _emailController.text,
                                     password: _passwordController.text,
+                                    profilePic: imageName,
                                   ),
                                 );
+
+                            // Save user data in SharedPreferences
+                            //   saveUserData(
+                            //     _emailController.text,
+                            //     _fullNameController.text,
+                            //     imageName,
+                            //   );
                           }
                         },
                         child: const Text(

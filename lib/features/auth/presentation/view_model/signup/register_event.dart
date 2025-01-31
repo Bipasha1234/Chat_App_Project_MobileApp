@@ -7,18 +7,25 @@ sealed class RegisterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadCoursesAndBatches extends RegisterEvent {}
+class UploadImage extends RegisterEvent {
+  final File file;
+
+  const UploadImage({
+    required this.file,
+  });
+}
 
 class RegisterUser extends RegisterEvent {
   final BuildContext context;
   final String email;
   final String fullName;
   final String password;
+  final String? profilePic;
 
-  const RegisterUser({
-    required this.context,
-    required this.email,
-    required this.fullName,
-    required this.password,
-  });
+  const RegisterUser(
+      {required this.context,
+      required this.email,
+      required this.fullName,
+      required this.password,
+      this.profilePic});
 }

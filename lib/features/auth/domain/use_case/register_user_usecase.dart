@@ -18,12 +18,13 @@ class RegisterUserParams extends Equatable {
     this.profilePic,
   });
 
-  // Initial Constructor
-  const RegisterUserParams.initial()
-      : email = '',
-        fullName = '',
-        password = '',
-        profilePic = null;
+  //intial constructor
+  const RegisterUserParams.initial({
+    required this.email,
+    required this.fullName,
+    required this.password,
+    this.profilePic,
+  });
 
   @override
   List<Object?> get props => [email, fullName, password, profilePic];
