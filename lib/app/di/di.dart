@@ -5,6 +5,8 @@ import 'package:cool_app/features/auth/data/data_source/auth_local_datasource.da
 import 'package:cool_app/features/auth/data/data_source/auth_remote_datasource.dart';
 import 'package:cool_app/features/auth/data/repository/auth_local_repository.dart';
 import 'package:cool_app/features/auth/data/repository/auth_remote_repository.dart';
+import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
+import 'package:cool_app/features/auth/domain/use_case/get_current_user_usecase.dart';
 import 'package:cool_app/features/auth/domain/use_case/login_usecase.dart';
 import 'package:cool_app/features/auth/domain/use_case/register_user_usecase.dart';
 import 'package:cool_app/features/auth/domain/use_case/upload_image_usecase.dart';
@@ -69,15 +71,26 @@ _initRegisterDependencies() {
       getIt<AuthRemoteRepository>(),
     ),
   );
+  getIt.registerLazySingleton<GetCurrentUserUseCase>(
+    () => GetCurrentUserUseCase(
+      getIt<AuthRemoteRepository>(),
+    ),
+  );
 
   getIt.registerFactory<RegisterBloc>(
     () => RegisterBloc(registerUseCase: getIt(), uploadImageUsecase: getIt()),
   );
 }
 
-_initHomeDependencies() async {
+_initHomeDependencies() {
+  // Register AuthEntity first
+  getIt.registerSingleton<AuthEntity>(
+    const AuthEntity(email: '', fullName: '', password: ''),
+  );
+
+  // Register HomeCubit and pass AuthEntity instance
   getIt.registerFactory<HomeCubit>(
-    () => HomeCubit(),
+    () => HomeCubit(getIt<AuthEntity>()),
   );
 }
 
@@ -99,6 +112,7 @@ _initLoginDependencies() async {
       registerBloc: getIt<RegisterBloc>(),
       homeCubit: getIt<HomeCubit>(),
       loginUseCase: getIt<LoginUseCase>(),
+      getCurrentUserUseCase: getIt<GetCurrentUserUseCase>(),
     ),
   );
 }

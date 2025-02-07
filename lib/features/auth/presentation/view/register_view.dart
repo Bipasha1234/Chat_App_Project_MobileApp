@@ -15,9 +15,10 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _fullNameController = TextEditingController(text: 'bipasha');
+  final _emailController =
+      TextEditingController(text: 'bipashalamsal@gmail.com');
+  final _passwordController = TextEditingController(text: '123456');
 
   final _gap = const SizedBox(height: 20);
 
@@ -47,16 +48,6 @@ class _RegisterViewState extends State<RegisterView> {
       debugPrint(e.toString());
     }
   }
-
-  // Future<void> saveUserData(
-  //     String email, String fullName, String imageName) async {
-  //   final sharedPreferences = await SharedPreferences.getInstance();
-  //   await sharedPreferences.setString('email', email);
-  //   await sharedPreferences.setString('fullName', fullName);
-  //   await sharedPreferences.setString('profilePic', imageName);
-
-  //   print('Profile Pic URL saved: $imageName'); // Debugging line
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -143,10 +134,10 @@ class _RegisterViewState extends State<RegisterView> {
                           );
                         },
                         child: SizedBox(
-                          height: 200,
-                          width: 200,
+                          height: 220,
+                          width: 220,
                           child: CircleAvatar(
-                            radius: 50,
+                            radius: 55,
                             backgroundImage: _img != null
                                 ? FileImage(_img!)
                                 : const AssetImage('assets/images/user.png')
@@ -278,13 +269,6 @@ class _RegisterViewState extends State<RegisterView> {
                                     profilePic: imageName,
                                   ),
                                 );
-
-                            // Save user data in SharedPreferences
-                            //   saveUserData(
-                            //     _emailController.text,
-                            //     _fullNameController.text,
-                            //     imageName,
-                            //   );
                           }
                         },
                         child: const Text(
