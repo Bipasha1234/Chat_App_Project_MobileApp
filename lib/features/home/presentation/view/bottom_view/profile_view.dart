@@ -316,22 +316,26 @@ import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
   final AuthEntity user;
-  final String baseUrl =
-      'http://10.0.2.2:3000/uploads/'; // Replace with your actual base URL
+  final String baseUrl = 'http://10.0.2.2:3000/uploads/';
 
   const ProfileView({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
               child: CircleAvatar(
-                radius: 50,
+                radius: 60,
                 backgroundImage:
                     user.profilePic != null && user.profilePic!.isNotEmpty
                         ? NetworkImage('$baseUrl${user.profilePic}')
@@ -339,16 +343,54 @@ class ProfileView extends StatelessWidget {
                             as ImageProvider,
               ),
             ),
+            const SizedBox(height: 16),
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.person, color: Colors.blue),
+                      title: Text(
+                        user.fullName,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text('Full Name'),
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.email, color: Colors.blue),
+                      title: Text(
+                        user.email,
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      subtitle: const Text('Email'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
-            Text('Full Name: ${user.fullName}',
-                style: const TextStyle(fontSize: 20)),
-            Text('Email: ${user.email}', style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Implement profile update or other actions if needed
-              },
-              child: const Text('Update Profile'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  // Implement profile update logic here
+                },
+                icon: const Icon(Icons.edit),
+                label: const Text('Update Profile'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  textStyle: const TextStyle(fontSize: 18),
+                  backgroundColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+              ),
             ),
           ],
         ),
