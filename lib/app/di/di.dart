@@ -12,6 +12,10 @@ import 'package:cool_app/features/auth/domain/use_case/register_user_usecase.dar
 import 'package:cool_app/features/auth/domain/use_case/upload_image_usecase.dart';
 import 'package:cool_app/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:cool_app/features/auth/presentation/view_model/signup/register_bloc.dart';
+import 'package:cool_app/features/chat/data/data_source/chat_remote_datasource.dart';
+import 'package:cool_app/features/chat/data/repository/chat_remote_repository.dart';
+import 'package:cool_app/features/chat/domain/use_case/get_user_sidebar.dart';
+import 'package:cool_app/features/chat/presentation/view_model/login/chat_bloc.dart';
 import 'package:cool_app/features/home/presentation/view_model/home_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -26,6 +30,7 @@ Future<void> initDependencies() async {
   await _initHomeDependencies();
   await _initRegisterDependencies();
   await _initLoginDependencies();
+  await _initChatDependencies();
 }
 
 Future<void> _initSharedPreferences() async {
@@ -114,5 +119,28 @@ _initLoginDependencies() async {
       loginUseCase: getIt<LoginUseCase>(),
       getCurrentUserUseCase: getIt<GetCurrentUserUseCase>(),
     ),
+  );
+}
+
+_initChatDependencies() async {
+  getIt.registerLazySingleton<TokenSharedPrefs>(
+    () => TokenSharedPrefs(getIt<SharedPreferences>()),
+  );
+
+  getIt.registerLazySingleton<ChatRemoteDataSource>(
+      () => ChatRemoteDataSource(dio: getIt<Dio>()));
+
+  getIt.registerLazySingleton(
+    () => ChatRemoteRepository(getIt<ChatRemoteDataSource>()),
+  );
+
+  getIt.registerLazySingleton<GetUsersForSidebarUseCase>(
+    () => GetUsersForSidebarUseCase(
+      getIt<ChatRemoteRepository>(),
+    ),
+  );
+
+  getIt.registerFactory<ChatBloc>(
+    () => ChatBloc(getUsersForSidebarUseCase: getIt()),
   );
 }
