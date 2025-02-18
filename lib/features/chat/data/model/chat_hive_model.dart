@@ -10,38 +10,75 @@ class ChatHiveModel extends Equatable {
   @HiveField(0)
   final String userId;
   @HiveField(1)
-  final String fullname;
+  final String senderId; // Added senderId field
   @HiveField(2)
-  final String profilePic;
+  final String receiverId; // Added receiverId field
   @HiveField(3)
-  final String latestMessage;
+  final String fullName;
   @HiveField(4)
-  final String messageTimestamp;
+  final String? profilePic;
+  @HiveField(5)
+  final String latestMessage;
+  @HiveField(6)
+  final DateTime? lastMessageTime;
+
+  // Added message content fields
+  @HiveField(7)
+  final String? text; // Text content of the message
+  @HiveField(8)
+  final String? image; // Image URL if an image is sent
+  @HiveField(9)
+  final String? audio; // Audio URL if an audio file is sent
+  @HiveField(10)
+  final String? document; // Document URL if a document is sent
+  @HiveField(11)
+  final String? documentName; // Document name if a document is sent
 
   const ChatHiveModel({
     required this.userId,
-    required this.fullname,
-    required this.profilePic,
+    required this.senderId, // Added senderId to constructor
+    required this.receiverId, // Added receiverId to constructor
+    required this.fullName,
+    this.profilePic,
     this.latestMessage = "No message",
-    this.messageTimestamp = "",
+    this.lastMessageTime,
+    this.text,
+    this.image,
+    this.audio,
+    this.document,
+    this.documentName,
   });
 
   // Initial Constructor
   const ChatHiveModel.initial()
       : userId = '',
-        fullname = '',
-        profilePic = '',
+        senderId = '',
+        receiverId = '',
+        fullName = '',
+        profilePic = null,
         latestMessage = "No message",
-        messageTimestamp = "";
+        lastMessageTime = null,
+        text = null,
+        image = null,
+        audio = null,
+        document = null,
+        documentName = null;
 
   // From Entity
   factory ChatHiveModel.fromEntity(ChatEntity entity) {
     return ChatHiveModel(
       userId: entity.userId,
-      fullname: entity.fullname,
-      profilePic: entity.profilePic,
+      senderId: entity.senderId, // Mapping senderId from entity
+      receiverId: entity.receiverId, // Mapping receiverId from entity
+      fullName: entity.fullName,
+      profilePic: entity.profilePic.isEmpty ? null : entity.profilePic,
       latestMessage: entity.latestMessage,
-      messageTimestamp: entity.messageTimestamp,
+      lastMessageTime: entity.lastMessageTime,
+      text: entity.text,
+      image: entity.image,
+      audio: entity.audio,
+      document: entity.document,
+      documentName: entity.documentName,
     );
   }
 
@@ -49,19 +86,33 @@ class ChatHiveModel extends Equatable {
   ChatEntity toEntity() {
     return ChatEntity(
       userId: userId,
-      fullname: fullname,
-      profilePic: profilePic,
+      senderId: senderId, // Added senderId to entity conversion
+      receiverId: receiverId, // Added receiverId to entity conversion
+      fullName: fullName,
+      profilePic: profilePic ?? '',
       latestMessage: latestMessage,
-      messageTimestamp: messageTimestamp,
+      lastMessageTime: lastMessageTime,
+      text: text,
+      image: image,
+      audio: audio,
+      document: document,
+      documentName: documentName,
     );
   }
 
   @override
   List<Object?> get props => [
         userId,
-        fullname,
+        senderId, // Include senderId in equality check
+        receiverId, // Include receiverId in equality check
+        fullName,
         profilePic,
         latestMessage,
-        messageTimestamp,
+        lastMessageTime,
+        text,
+        image,
+        audio,
+        document,
+        documentName,
       ];
 }

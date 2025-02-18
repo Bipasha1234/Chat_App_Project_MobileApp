@@ -4,4 +4,7 @@ import 'package:dartz/dartz.dart';
 
 abstract interface class IChatRepository {
   Future<Either<Failure, List<ChatEntity>>> getUsersForSidebar();
+
+  // Add the sendMessage method
+  Future<Either<Failure, bool>> sendMessage(ChatEntity chatEntity);
 }

@@ -15,4 +15,5 @@ class ApiEndpoints {
 
 //-----chat routes-----//
   static const String getUsersForSidebar = "messages/users";
+  static const String sendMessage = "messages/send/:id";
 }

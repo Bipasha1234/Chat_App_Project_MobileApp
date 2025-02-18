@@ -24,7 +24,7 @@ class HomeState {
       views: [
         BlocProvider(
           create: (context) => getIt<ChatBloc>(),
-          child: ChatView(),
+          child: const ChatView(),
         ),
         const Center(child: Text('Groups')),
         ProfileView(user: user), // Pass user to ProfileView

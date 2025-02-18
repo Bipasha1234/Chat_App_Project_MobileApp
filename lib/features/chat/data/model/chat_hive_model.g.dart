@@ -18,27 +18,48 @@ class ChatHiveModelAdapter extends TypeAdapter<ChatHiveModel> {
     };
     return ChatHiveModel(
       userId: fields[0] as String,
-      fullname: fields[1] as String,
-      profilePic: fields[2] as String,
-      latestMessage: fields[3] as String,
-      messageTimestamp: fields[4] as String,
+      senderId: fields[1] as String,
+      receiverId: fields[2] as String,
+      fullName: fields[3] as String,
+      profilePic: fields[4] as String?,
+      latestMessage: fields[5] as String,
+      lastMessageTime: fields[6] as DateTime?,
+      text: fields[7] as String?,
+      image: fields[8] as String?,
+      audio: fields[9] as String?,
+      document: fields[10] as String?,
+      documentName: fields[11] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatHiveModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
-      ..write(obj.fullname)
+      ..write(obj.senderId)
       ..writeByte(2)
-      ..write(obj.profilePic)
+      ..write(obj.receiverId)
       ..writeByte(3)
-      ..write(obj.latestMessage)
+      ..write(obj.fullName)
       ..writeByte(4)
-      ..write(obj.messageTimestamp);
+      ..write(obj.profilePic)
+      ..writeByte(5)
+      ..write(obj.latestMessage)
+      ..writeByte(6)
+      ..write(obj.lastMessageTime)
+      ..writeByte(7)
+      ..write(obj.text)
+      ..writeByte(8)
+      ..write(obj.image)
+      ..writeByte(9)
+      ..write(obj.audio)
+      ..writeByte(10)
+      ..write(obj.document)
+      ..writeByte(11)
+      ..write(obj.documentName);
   }
 
   @override

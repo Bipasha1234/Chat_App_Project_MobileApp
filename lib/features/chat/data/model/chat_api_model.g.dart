@@ -7,20 +7,34 @@ part of 'chat_api_model.dart';
 // **************************************************************************
 
 ChatApiModel _$ChatApiModelFromJson(Map<String, dynamic> json) => ChatApiModel(
-      id: json['_id'] as String?,
-      userId: json['userId'] as String,
-      fullname: json['fullname'] as String,
-      profilePic: json['profilePic'] as String,
+      userId: json['_id'] as String,
+      senderId: json['senderId'] as String,
+      receiverId: json['receiverId'] as String,
+      fullName: json['fullName'] as String,
+      profilePic: json['profilePic'] as String?,
       latestMessage: json['latestMessage'] as String? ?? "No message",
-      messageTimestamp: json['messageTimestamp'] as String? ?? "",
+      lastMessageTime: json['lastMessageTime'] == null
+          ? null
+          : DateTime.parse(json['lastMessageTime'] as String),
+      text: json['text'] as String?,
+      image: json['image'] as String?,
+      audio: json['audio'] as String?,
+      document: json['document'] as String?,
+      documentName: json['documentName'] as String?,
     );
 
 Map<String, dynamic> _$ChatApiModelToJson(ChatApiModel instance) =>
     <String, dynamic>{
-      '_id': instance.id,
-      'userId': instance.userId,
-      'fullname': instance.fullname,
+      '_id': instance.userId,
+      'senderId': instance.senderId,
+      'receiverId': instance.receiverId,
+      'fullName': instance.fullName,
       'profilePic': instance.profilePic,
       'latestMessage': instance.latestMessage,
-      'messageTimestamp': instance.messageTimestamp,
+      'lastMessageTime': instance.lastMessageTime?.toIso8601String(),
+      'text': instance.text,
+      'image': instance.image,
+      'audio': instance.audio,
+      'document': instance.document,
+      'documentName': instance.documentName,
     };

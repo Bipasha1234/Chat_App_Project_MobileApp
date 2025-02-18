@@ -1,8 +1,11 @@
+import 'package:cool_app/app/constants/api_endpoints.dart';
+import 'package:cool_app/app/di/di.dart';
 import 'package:cool_app/core/common/snackbar/my_snackbar.dart';
+import 'package:cool_app/features/chat/presentation/view/chat_screen_betn_users.dart';
 import 'package:cool_app/features/chat/presentation/view_model/login/chat_bloc.dart';
-import 'package:cool_app/features/home/presentation/view/bottom_view/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart'; // For formatting the date
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});
@@ -16,6 +19,14 @@ class _ChatViewState extends State<ChatView> {
   void initState() {
     super.initState();
     context.read<ChatBloc>().add(LoadGetUser());
+  }
+
+  String _formatDateTime(DateTime? dateTime) {
+    if (dateTime == null) return "No date";
+
+    // Format the date time to a readable string (e.g., "12:30 PM, Feb 18, 2025")
+    final DateFormat formatter = DateFormat('h:mm a, MMM d, yyyy');
+    return formatter.format(dateTime);
   }
 
   @override
@@ -51,20 +62,38 @@ class _ChatViewState extends State<ChatView> {
                         itemBuilder: (BuildContext context, index) {
                           final user = state.users[index];
                           return ListTile(
-                            leading: const Icon(Icons.account_circle),
-                            title: Text(user.fullname),
-                            subtitle: Text(user.latestMessage),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.chat),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Settingsiew(),
-                                  ),
-                                );
-                              },
+                            leading: CircleAvatar(
+                              radius:
+                                  25, // Adjust the radius to your preference
+                              backgroundImage: NetworkImage(
+                                '${ApiEndpoints.imageUrl}/${user.profilePic}', // Assuming profilePic is the image filename
+                              ),
+                              backgroundColor:
+                                  Colors.grey[200], // Default color if no image
                             ),
+                            title: Text(user.fullName),
+                            subtitle: Text(user.latestMessage),
+                            trailing: Text(
+                              _formatDateTime(user
+                                  .lastMessageTime), // Display formatted latest message time
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
+                            ),
+                            onTap: () {
+                              // Navigate to the chat screen for the selected user
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider(
+                                    create: (context) => getIt<ChatBloc>(),
+                                    child: ChatScreen(
+                                      user: user,
+                                      // Pass the user to the chat screen
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         },
                       );
