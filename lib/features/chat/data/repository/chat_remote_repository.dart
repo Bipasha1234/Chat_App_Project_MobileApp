@@ -29,4 +29,15 @@ class ChatRemoteRepository implements IChatRepository {
       return Left(ApiFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, List<ChatEntity>>> getMessages(
+      String chatId, String? token) async {
+    try {
+      final messages = await _chatRemoteDatasource.getMessages(chatId, token);
+      return Right(messages);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
 }

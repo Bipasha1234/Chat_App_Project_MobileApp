@@ -26,6 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     _chatBloc = context.read<ChatBloc>();
     _getSenderId(); // Fetch senderId (token) from SharedPreferences
+    _loadMessages(); // Load messages when the screen is initialized
   }
 
   // Fetch the senderId from SharedPreferences (or token)
@@ -51,9 +52,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 'userId']; // Extract the field (e.g., 'userId') from the payload
             print("Decoded senderId: $_senderId");
 
-            // If the value you want is a specific key like 'userId'
-            // _senderId = payload['userId'];
-            // or any other field you're interested in
+            // Load messages after senderId is fetched
+            if (_senderId != null) {
+              _loadMessages();
+            }
           } catch (e) {
             // Handle error if decoding fails
             print('Error decoding token: $e');
@@ -61,6 +63,18 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       },
     );
+  }
+
+  // Load messages from the server or local storage
+  void _loadMessages() {
+    if (_senderId != null) {
+      // Construct the chatId or use another identifier to get messages
+      final chatId =
+          widget.user.userId; // Or use another method to generate chatId
+
+      // Trigger the GetMessages event with userId and receiverId (or chatId)
+      _chatBloc.add(LoadMessages(chatId));
+    }
   }
 
   @override
@@ -99,8 +113,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       itemBuilder: (context, index) {
                         final message = state.messages[index];
                         return ListTile(
-                          title: Text(message.fullName),
-                          subtitle: Text(message.text ?? ''),
+                          subtitle: Text(message.text ??
+                              ''), // Ensure text is passed correctly
                           trailing: Text(
                             _formatDateTime(message.lastMessageTime),
                             style: const TextStyle(
@@ -147,7 +161,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             text: _messageController.text, // Text content
                           );
 
-                          _chatBloc.add(SendMessage(chatEntity: chatEntity));
+                          _chatBloc.add(SendMessage(chatEntity));
                         }
                       },
                     ),

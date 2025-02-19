@@ -7,4 +7,7 @@ abstract interface class IChatRepository {
 
   // Add the sendMessage method
   Future<Either<Failure, bool>> sendMessage(ChatEntity chatEntity);
+
+  Future<Either<Failure, List<ChatEntity>>> getMessages(
+      String chatId, String? token);
 }

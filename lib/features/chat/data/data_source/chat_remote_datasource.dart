@@ -175,4 +175,58 @@ class ChatRemoteDataSource implements IChatDataSource {
       throw Exception("Error sending message: $e");
     }
   }
+
+  @override
+  Future<List<ChatEntity>> getMessages(String chatId, String? token) async {
+    try {
+      var response = await dio.get(
+        ApiEndpoints.getMessages + chatId,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> messagesJson = response.data ?? [];
+        List<ChatEntity> messages = messagesJson.map((json) {
+          // Safe handling of the response fields
+          String userId = json["_id"] ?? '';
+          String text = json["text"] ?? "No text";
+          String image = json["image"] ?? "No image";
+          String fullName = json["text"] ?? "Unknown";
+          String profilePic = json["profilePic"] ?? "";
+          String latestMessage = json["latestMessage"] ?? "No message";
+          DateTime? lastMessageTime = json['lastMessageTime'] != null
+              ? DateTime.tryParse(json['lastMessageTime'])
+              : null;
+
+          String senderId = json["senderId"] ?? '';
+          String receiverId = json["receiverId"] ?? '';
+
+          // Create and return ChatEntity
+          return ChatEntity(
+            userId: userId,
+            senderId: senderId,
+            receiverId: receiverId,
+            text: text,
+            image: image,
+            fullName: fullName,
+            profilePic: profilePic,
+            latestMessage: latestMessage,
+            lastMessageTime: lastMessageTime,
+          );
+        }).toList();
+
+        return messages;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
