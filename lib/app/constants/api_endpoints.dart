@@ -17,5 +17,6 @@ class ApiEndpoints {
   static const String getUsersForSidebar = "messages/users";
   static const String sendMessage = "messages/send";
   static const String getMessages = "messages/";
+  //--chat route for deleteChat added --///
   static const String deleteChat = "messages/delete/";
 }
