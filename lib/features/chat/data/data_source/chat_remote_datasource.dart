@@ -57,6 +57,8 @@ class ChatRemoteDataSource implements IChatDataSource {
               json["_id"] ?? ''; // Fallback to an empty string if null
           String fullName = json["fullName"] ?? "Unknown";
           String profilePic = json["profilePic"] ?? "";
+          String email = json["email"] ?? "";
+
           String latestMessage = json["latestMessage"] ?? "No message";
           DateTime? lastMessageTime = json['lastMessageTime'] != null
               ? DateTime.tryParse(json['lastMessageTime'])
@@ -72,6 +74,7 @@ class ChatRemoteDataSource implements IChatDataSource {
             receiverId: receiverId,
             fullName: fullName,
             profilePic: profilePic,
+            email: email,
             latestMessage: latestMessage,
             lastMessageTime: lastMessageTime,
           );
@@ -194,6 +197,7 @@ class ChatRemoteDataSource implements IChatDataSource {
           // Safe handling of the response fields
           String userId = json["_id"] ?? '';
           String text = json["text"] ?? "No text";
+          String email = json["email"] ?? "No email";
           String image = json["image"] ?? "No image";
           String fullName = json["text"] ?? "Unknown";
           String profilePic = json["profilePic"] ?? "";
@@ -201,22 +205,26 @@ class ChatRemoteDataSource implements IChatDataSource {
           DateTime? lastMessageTime = json['lastMessageTime'] != null
               ? DateTime.tryParse(json['lastMessageTime'])
               : null;
+          DateTime? createdAt = json['createdAt'] != null
+              ? DateTime.tryParse(json['createdAt'])
+              : null;
 
           String senderId = json["senderId"] ?? '';
           String receiverId = json["receiverId"] ?? '';
 
           // Create and return ChatEntity
           return ChatEntity(
-            userId: userId,
-            senderId: senderId,
-            receiverId: receiverId,
-            text: text,
-            image: image,
-            fullName: fullName,
-            profilePic: profilePic,
-            latestMessage: latestMessage,
-            lastMessageTime: lastMessageTime,
-          );
+              userId: userId,
+              senderId: senderId,
+              receiverId: receiverId,
+              text: text,
+              email: email,
+              image: image,
+              fullName: fullName,
+              profilePic: profilePic,
+              latestMessage: latestMessage,
+              lastMessageTime: lastMessageTime,
+              createdAt: createdAt);
         }).toList();
 
         return messages;

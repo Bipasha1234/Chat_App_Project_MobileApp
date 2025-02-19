@@ -24,8 +24,7 @@ class _ChatViewState extends State<ChatView> {
   String _formatDateTime(DateTime? dateTime) {
     if (dateTime == null) return "No date";
 
-    // Format the date time to a readable string (e.g., "12:30 PM, Feb 18, 2025")
-    final DateFormat formatter = DateFormat('h:mm a, MMM d, yyyy');
+    final DateFormat formatter = DateFormat('h:mm a');
     return formatter.format(dateTime);
   }
 

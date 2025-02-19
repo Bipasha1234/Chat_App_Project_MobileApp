@@ -21,6 +21,10 @@ ChatApiModel _$ChatApiModelFromJson(Map<String, dynamic> json) => ChatApiModel(
       audio: json['audio'] as String?,
       document: json['document'] as String?,
       documentName: json['documentName'] as String?,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      email: json['email'] as String?,
     );
 
 Map<String, dynamic> _$ChatApiModelToJson(ChatApiModel instance) =>
@@ -37,4 +41,6 @@ Map<String, dynamic> _$ChatApiModelToJson(ChatApiModel instance) =>
       'audio': instance.audio,
       'document': instance.document,
       'documentName': instance.documentName,
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'email': instance.email,
     };

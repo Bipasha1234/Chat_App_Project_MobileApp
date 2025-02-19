@@ -10,9 +10,9 @@ class ChatHiveModel extends Equatable {
   @HiveField(0)
   final String userId;
   @HiveField(1)
-  final String senderId; // Added senderId field
+  final String senderId;
   @HiveField(2)
-  final String receiverId; // Added receiverId field
+  final String receiverId;
   @HiveField(3)
   final String fullName;
   @HiveField(4)
@@ -24,20 +24,26 @@ class ChatHiveModel extends Equatable {
 
   // Added message content fields
   @HiveField(7)
-  final String? text; // Text content of the message
+  final String? text;
   @HiveField(8)
-  final String? image; // Image URL if an image is sent
+  final String? image;
   @HiveField(9)
-  final String? audio; // Audio URL if an audio file is sent
+  final String? audio;
   @HiveField(10)
-  final String? document; // Document URL if a document is sent
+  final String? document;
   @HiveField(11)
-  final String? documentName; // Document name if a document is sent
+  final String? documentName;
+
+  @HiveField(12)
+  final DateTime? createdAt;
+
+  @HiveField(13)
+  final String? email; // Added email field
 
   const ChatHiveModel({
     required this.userId,
-    required this.senderId, // Added senderId to constructor
-    required this.receiverId, // Added receiverId to constructor
+    required this.senderId,
+    required this.receiverId,
     required this.fullName,
     this.profilePic,
     this.latestMessage = "No message",
@@ -47,10 +53,12 @@ class ChatHiveModel extends Equatable {
     this.audio,
     this.document,
     this.documentName,
+    this.createdAt,
+    this.email, // Added email to constructor
   });
 
   // Initial Constructor
-  const ChatHiveModel.initial()
+  ChatHiveModel.initial()
       : userId = '',
         senderId = '',
         receiverId = '',
@@ -62,14 +70,16 @@ class ChatHiveModel extends Equatable {
         image = null,
         audio = null,
         document = null,
-        documentName = null;
+        documentName = null,
+        createdAt = DateTime.now(),
+        email = null; // Set initial value for email
 
   // From Entity
   factory ChatHiveModel.fromEntity(ChatEntity entity) {
     return ChatHiveModel(
       userId: entity.userId,
-      senderId: entity.senderId, // Mapping senderId from entity
-      receiverId: entity.receiverId, // Mapping receiverId from entity
+      senderId: entity.senderId,
+      receiverId: entity.receiverId,
       fullName: entity.fullName,
       profilePic: entity.profilePic.isEmpty ? null : entity.profilePic,
       latestMessage: entity.latestMessage,
@@ -79,6 +89,8 @@ class ChatHiveModel extends Equatable {
       audio: entity.audio,
       document: entity.document,
       documentName: entity.documentName,
+      createdAt: entity.createdAt,
+      email: entity.email, // Map email from entity
     );
   }
 
@@ -86,8 +98,8 @@ class ChatHiveModel extends Equatable {
   ChatEntity toEntity() {
     return ChatEntity(
       userId: userId,
-      senderId: senderId, // Added senderId to entity conversion
-      receiverId: receiverId, // Added receiverId to entity conversion
+      senderId: senderId,
+      receiverId: receiverId,
       fullName: fullName,
       profilePic: profilePic ?? '',
       latestMessage: latestMessage,
@@ -97,14 +109,16 @@ class ChatHiveModel extends Equatable {
       audio: audio,
       document: document,
       documentName: documentName,
+      createdAt: createdAt,
+      email: email ?? '', // Include email field in entity
     );
   }
 
   @override
   List<Object?> get props => [
         userId,
-        senderId, // Include senderId in equality check
-        receiverId, // Include receiverId in equality check
+        senderId,
+        receiverId,
         fullName,
         profilePic,
         latestMessage,
@@ -114,5 +128,7 @@ class ChatHiveModel extends Equatable {
         audio,
         document,
         documentName,
+        createdAt,
+        email, // Include email in equality check
       ];
 }

@@ -1,3 +1,4 @@
+import 'package:cool_app/app/constants/api_endpoints.dart';
 import 'package:cool_app/app/shared_prefs/token_shared_prefs.dart';
 import 'package:cool_app/features/chat/domain/entity/chat_entity.dart';
 import 'package:cool_app/features/chat/presentation/view_model/login/chat_bloc.dart';
@@ -77,11 +78,78 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void _showUserOptions() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        contentPadding: const EdgeInsets.all(16.0),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: 60,
+              backgroundImage: widget.user.profilePic != null
+                  ? NetworkImage(
+                      '${ApiEndpoints.imageUrl}/${widget.user.profilePic}')
+                  : null,
+              child: widget.user.profilePic == null
+                  ? const Icon(Icons.person, size: 60, color: Colors.grey)
+                  : null,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              widget.user.fullName,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Email: ${widget.user.email ?? 'Not available'}',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red, // Button color
+                foregroundColor: Colors.white, // Text/Icon color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                elevation: 3,
+              ).copyWith(
+                overlayColor: WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.hovered)) {
+                    return Colors.red.shade300; // Light red on hover
+                  }
+                  return null;
+                }),
+              ),
+              icon: const Icon(Icons.delete, size: 20),
+              label: const Text('Delete Chat'),
+              onPressed: () {
+                // _chatBloc.add(DeleteChat(widget.user.userId));
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.user.fullName),
+        title: GestureDetector(
+          onTap: _showUserOptions, // Show user details on tap
+          child: Text(widget.user.fullName),
+        ),
       ),
       body: BlocListener<ChatBloc, ChatState>(
         listener: (context, state) {
@@ -112,13 +180,55 @@ class _ChatScreenState extends State<ChatScreen> {
                       itemCount: state.messages.length,
                       itemBuilder: (context, index) {
                         final message = state.messages[index];
-                        return ListTile(
-                          subtitle: Text(message.text ??
-                              ''), // Ensure text is passed correctly
-                          trailing: Text(
-                            _formatDateTime(message.lastMessageTime),
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.grey),
+                        final isSender = message.senderId ==
+                            _senderId; // Check if the message is sent by the logged-in user
+
+                        return Align(
+                          alignment: isSender
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft, // Align based on sender
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 8.0),
+                              decoration: BoxDecoration(
+                                color: isSender
+                                    ? const Color.fromARGB(255, 117, 198, 171)
+                                    : Colors.grey[
+                                        300], // Different colors for sender and receiver
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: isSender
+                                    ? CrossAxisAlignment.end
+                                    : CrossAxisAlignment
+                                        .start, // Align text based on sender
+                                children: [
+                                  Text(
+                                    message.text ?? '', // Display message text
+                                    style: TextStyle(
+                                      color: isSender
+                                          ? Colors.white
+                                          : Colors
+                                              .black, // Text color based on sender
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4.0),
+                                  Text(
+                                    _formatDateTime(message
+                                        .createdAt), // Time of the message
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                      color: isSender
+                                          ? Colors.white
+                                          : Colors.grey, // Time color
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -157,6 +267,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             latestMessage: _messageController.text,
                             lastMessageTime: DateTime.now(),
                             isSeen: false,
+                            email: widget.user.email,
                             deletedBy: const [],
                             text: _messageController.text, // Text content
                           );

@@ -22,6 +22,11 @@ class ChatApiModel extends Equatable {
   final String? document; // Document URL if a document is sent
   final String? documentName; // Document name if a document is sent
 
+  @JsonKey(name: 'createdAt')
+  final DateTime? createdAt; // Added createdAt field
+
+  final String? email; // Added email field
+
   const ChatApiModel({
     required this.userId,
     required this.senderId, // Added senderId to constructor
@@ -35,6 +40,8 @@ class ChatApiModel extends Equatable {
     this.audio,
     this.document,
     this.documentName,
+    this.createdAt, // Added createdAt to constructor
+    this.email, // Added email to constructor
   });
 
   /// ✅ Convert API Model to Entity
@@ -52,6 +59,8 @@ class ChatApiModel extends Equatable {
       audio: audio,
       document: document,
       documentName: documentName,
+      createdAt: createdAt, // Include createdAt in entity conversion
+      email: email ?? '', // Include email in entity conversion
     );
   }
 
@@ -70,6 +79,8 @@ class ChatApiModel extends Equatable {
       audio: entity.audio,
       document: entity.document,
       documentName: entity.documentName,
+      createdAt: entity.createdAt, // Mapping createdAt from entity
+      email: entity.email, // Mapping email from entity
     );
   }
 
@@ -90,6 +101,10 @@ class ChatApiModel extends Equatable {
       audio: json['audio'] as String?,
       document: json['document'] as String?,
       documentName: json['documentName'] as String?,
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      email: json['email']
+          as String?, // Added email field during JSON deserialization
     );
   }
 
@@ -108,6 +123,9 @@ class ChatApiModel extends Equatable {
       'audio': audio,
       'document': document,
       'documentName': documentName,
+      'createdAt':
+          createdAt?.toIso8601String(), // Convert createdAt to string for JSON
+      'email': email, // Add email field to JSON output
     };
   }
 
@@ -125,5 +143,7 @@ class ChatApiModel extends Equatable {
         audio,
         document,
         documentName,
+        createdAt, // Include createdAt in equality check
+        email, // Include email in equality check
       ];
 }

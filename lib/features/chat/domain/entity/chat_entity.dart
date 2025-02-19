@@ -15,6 +15,8 @@ class ChatEntity extends Equatable {
   final String? audio; // Audio URL if an audio file is sent
   final String? document; // Document URL if a document is sent
   final String? documentName; // Document name if a document is sent
+  final DateTime? createdAt; // Timestamp for when the message/chat was created
+  final String? email; // Email of the user
 
   const ChatEntity({
     required this.userId,
@@ -22,6 +24,7 @@ class ChatEntity extends Equatable {
     required this.receiverId, // Receiver's ID
     required this.fullName,
     required this.profilePic,
+    this.email, // Add email to the constructor
     this.latestMessage = "No message", // Default message if none exists
     this.lastMessageTime,
     this.isSeen = false, // Default value for read status
@@ -31,6 +34,7 @@ class ChatEntity extends Equatable {
     this.audio, // Optional audio URL
     this.document, // Optional document URL
     this.documentName, // Optional document name
+    this.createdAt, // Timestamp when the chat was created
   });
 
   @override
@@ -49,6 +53,8 @@ class ChatEntity extends Equatable {
         audio,
         document,
         documentName,
+        createdAt,
+        email, // Include email in the props for equality comparison
       ];
 
   // Method to handle deletion of message
@@ -60,6 +66,7 @@ class ChatEntity extends Equatable {
       receiverId: receiverId,
       fullName: fullName,
       profilePic: profilePic,
+      email: email, // Keep email the same during deletion
       latestMessage: latestMessage,
       lastMessageTime: lastMessageTime,
       isSeen: isSeen,
@@ -69,6 +76,7 @@ class ChatEntity extends Equatable {
       audio: audio,
       document: document,
       documentName: documentName,
+      createdAt: createdAt, // Keep createdAt the same during deletion
     );
   }
 
@@ -80,6 +88,7 @@ class ChatEntity extends Equatable {
       receiverId: receiverId,
       fullName: fullName,
       profilePic: profilePic,
+      email: email, // Keep email the same during seen update
       latestMessage: latestMessage,
       lastMessageTime: lastMessageTime,
       isSeen: true,
@@ -89,6 +98,7 @@ class ChatEntity extends Equatable {
       audio: audio,
       document: document,
       documentName: documentName,
+      createdAt: createdAt, // Keep createdAt the same during seen update
     );
   }
 }
