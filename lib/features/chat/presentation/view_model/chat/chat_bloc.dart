@@ -1,9 +1,11 @@
 import 'package:cool_app/features/chat/domain/entity/chat_entity.dart';
 import 'package:cool_app/features/chat/domain/use_case/block_user.dart';
 import 'package:cool_app/features/chat/domain/use_case/delete_chat.dart';
+import 'package:cool_app/features/chat/domain/use_case/get_block_users.dart';
 import 'package:cool_app/features/chat/domain/use_case/get_messages.dart';
 import 'package:cool_app/features/chat/domain/use_case/get_user_sidebar.dart';
 import 'package:cool_app/features/chat/domain/use_case/send_message.dart';
+import 'package:cool_app/features/chat/domain/use_case/unblock_user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +18,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetMessagesUseCase _getMessagesUseCase;
   final DeleteChatUsecase _deleteChatUsecase;
   final BlockUserUsecase _blockUserUsecase;
+  final UnBlockUserUsecase _unblockUserUsecase;
+  final GetBlockedUsersUseCase _getblockedUserUsecase;
 
   ChatBloc({
     required GetUsersForSidebarUseCase getUsersForSidebarUseCase,
@@ -23,17 +27,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     required GetMessagesUseCase getMessagesUseCase,
     required DeleteChatUsecase deleteChatUsecase,
     required BlockUserUsecase blockUserUsecase,
+    required UnBlockUserUsecase unblockUserUsecase,
+    required GetBlockedUsersUseCase getblockedUserUsecase,
   })  : _getUsersForSidebarUseCase = getUsersForSidebarUseCase,
         _sendMessageUseCase = sendMessageUseCase,
         _getMessagesUseCase = getMessagesUseCase,
         _deleteChatUsecase = deleteChatUsecase,
         _blockUserUsecase = blockUserUsecase,
+        _unblockUserUsecase = unblockUserUsecase,
+        _getblockedUserUsecase = getblockedUserUsecase,
         super(ChatState.initial()) {
     on<LoadGetUser>(_onLoadGetUser);
     on<SendMessage>(_onSendMessage);
     on<LoadMessages>(_onLoadMessages);
     on<DeleteChat>(_onDeleteChat);
     on<BlockUser>(_onBlockUser);
+    on<UnBlockUser>(_onUnBlockUser);
+    on<LoadBlockedUsers>(_onLoadBlockedUsers);
   }
 
   // Loading users with improved error handling
@@ -149,5 +159,47 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(state.copyWith(isLoading: false, error: null));
       },
     );
+  }
+
+  Future<void> _onUnBlockUser(
+      UnBlockUser event, Emitter<ChatState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final result =
+        await _unblockUserUsecase.call(UnBlockUserParams(chatId: event.chatId));
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(isLoading: false, error: failure.message)),
+      (batches) {
+        emit(state.copyWith(isLoading: false, error: null));
+      },
+    );
+  }
+
+  Future<void> _onLoadBlockedUsers(
+      LoadBlockedUsers event, Emitter<ChatState> emit) async {
+    emit(state.copyWith(isLoading: true)); // Show loading indicator
+
+    try {
+      final result = await _getblockedUserUsecase.call(); // Call use case
+
+      result.fold(
+        (failure) => emit(state.copyWith(
+          isLoading: false,
+          error: "Failed to load blocked users: ${failure.message}",
+        )),
+        (blockedUsers) => emit(state.copyWith(
+          isLoading: false,
+          blockedUsers:
+              blockedUsers, // Update the state with the list of blocked users
+          error: null, // Reset any previous error
+        )),
+      );
+    } catch (e) {
+      emit(state.copyWith(
+        isLoading: false,
+        error: "An unexpected error occurred while loading blocked users.",
+      ));
+      print("Error in _onLoadBlockedUsers: $e");
+    }
   }
 }

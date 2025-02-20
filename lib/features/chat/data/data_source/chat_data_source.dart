@@ -13,4 +13,8 @@ abstract interface class IChatDataSource {
   Future<void> deleteChat(String chatId, String? token);
 
   Future<void> blockUser(String chatId, String? token);
+
+  Future<void> unblockUser(String chatId, String? token);
+
+  Future<List<ChatEntity>> getBlockedUsers();
 }

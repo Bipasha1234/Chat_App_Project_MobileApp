@@ -194,13 +194,28 @@ class _ProfileViewState extends State<ProfileView> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            const Row(
+              children: [
+                SizedBox(width: 8),
+                Text(
+                  'Profile - Manage your profile',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+
             Stack(
               clipBehavior: Clip.none, // This allows the icon to go outside
               children: [
                 GestureDetector(
                   onTap: _pickImage, // Open image picker when clicked
                   child: CircleAvatar(
-                    radius: 60,
+                    radius: 100,
                     backgroundImage: _image != null
                         ? FileImage(_image!)
                         : (user.profilePic != null &&
@@ -212,25 +227,25 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                 ),
                 Positioned(
-                  bottom: -3,
+                  bottom: -2,
                   right: -1,
                   child: GestureDetector(
                     onTap: _pickImage,
                     child: const Icon(
                       Icons.camera_alt,
                       color: Color.fromARGB(255, 58, 172, 134),
-                      size: 30,
+                      size: 46,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 14),
             Text(
               'Click the camera icon to update the photo',
               style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 25),
             // Conditionally show the edit fields
             Column(
               children: [
@@ -288,6 +303,7 @@ class _ProfileViewState extends State<ProfileView> {
                 if (_isEditing)
                   SizedBox(
                     width: double.infinity,
+                    height: 55,
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _updateProfile,
                       child: _isLoading

@@ -8,6 +8,7 @@ class ChatState extends Equatable {
   final String? error;
   final List<ChatEntity> users;
   final List<ChatEntity> messages;
+  final List<ChatEntity> blockedUsers; // Add blocked users
 
   const ChatState({
     required this.isLoading,
@@ -17,6 +18,7 @@ class ChatState extends Equatable {
     required this.error,
     required this.users,
     required this.messages,
+    required this.blockedUsers, // Initialize blocked users
   });
 
   factory ChatState.initial() {
@@ -28,6 +30,7 @@ class ChatState extends Equatable {
       error: null,
       users: [],
       messages: [],
+      blockedUsers: [], // Initialize as empty
     );
   }
 
@@ -39,6 +42,7 @@ class ChatState extends Equatable {
     String? error,
     List<ChatEntity>? users,
     List<ChatEntity>? messages,
+    List<ChatEntity>? blockedUsers, // Add blockedUsers parameter
   }) {
     return ChatState(
       isLoading: isLoading ?? this.isLoading,
@@ -48,9 +52,20 @@ class ChatState extends Equatable {
       error: error,
       users: users ?? this.users,
       messages: messages ?? this.messages,
+      blockedUsers:
+          blockedUsers ?? this.blockedUsers, // Update the list of blocked users
     );
   }
 
   @override
-  List<Object?> get props => [isLoading, isSending, isLoadingMessages, sendMessageSuccess, error, users, messages];
+  List<Object?> get props => [
+        isLoading,
+        isSending,
+        isLoadingMessages,
+        sendMessageSuccess,
+        error,
+        users,
+        messages,
+        blockedUsers
+      ];
 }

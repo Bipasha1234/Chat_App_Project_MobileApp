@@ -1,6 +1,7 @@
 import 'package:cool_app/app/di/di.dart';
 import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
 import 'package:cool_app/features/chat/presentation/view/chat_view.dart';
+import 'package:cool_app/features/chat/presentation/view/settings/settings_view.dart';
 import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.dart';
 import 'package:cool_app/features/home/presentation/view/bottom_view/profile/profile_view.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,10 @@ class HomeState {
         ),
         const Center(child: Text('Groups')),
         ProfileView(user: user), // Pass user to ProfileView
-        const Center(child: Text('Settings')),
+        BlocProvider(
+          create: (context) => getIt<ChatBloc>(),
+          child: const SettingsView(),
+        ),
       ],
     );
   }

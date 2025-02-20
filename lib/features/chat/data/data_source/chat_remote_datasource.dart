@@ -285,4 +285,115 @@ class ChatRemoteDataSource implements IChatDataSource {
       throw Exception(e);
     }
   }
+
+  @override
+  Future<void> unblockUser(String chatId, String? token) async {
+    try {
+      var response = await dio.post(
+        ApiEndpoints.unblockUser + chatId,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<List<ChatEntity>> getBlockedUsers() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final tokenSharedPrefs = TokenSharedPrefs(prefs);
+
+      final tokenResult = await tokenSharedPrefs.getToken();
+
+      String token = tokenResult.fold(
+        (failure) {
+          print("Failed to retrieve token: ${failure.message}");
+          throw Exception("Failed to retrieve token: ${failure.message}");
+        },
+        (retrievedToken) {
+          print("Token retrieved: $retrievedToken");
+          return retrievedToken;
+        },
+      );
+
+      if (token.isEmpty) {
+        throw Exception("No token found");
+      }
+
+      final response = await dio.get(
+        ApiEndpoints.getBlockedUsers,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      print("Response status: ${response.statusCode}");
+      print("Response data: ${response.data}");
+
+      if (response.statusCode == 200) {
+        // Check if response.data is a map and access the blockedUsers list
+        if (response.data is Map<String, dynamic>) {
+          // Extract the blockedUsers list from the map
+          List<dynamic> blockedUsersJson = response.data['blockedUsers'] ?? [];
+
+          // Map the decoded data into ChatEntity list
+          List<ChatEntity> blockedUsers = blockedUsersJson.map((json) {
+            String userId = json["_id"] ?? '';
+            String fullName = json["fullName"] ?? "Unknown";
+            String profilePic = json["profilePic"] ?? "";
+            String email = json["email"] ?? "";
+
+            String latestMessage = json["latestMessage"] ?? "No message";
+            DateTime? lastMessageTime = json['lastMessageTime'] != null
+                ? DateTime.tryParse(json['lastMessageTime'])
+                : null;
+
+            String senderId = json["senderId"] ?? '';
+            String receiverId = json["receiverId"] ?? '';
+
+            return ChatEntity(
+              userId: userId,
+              senderId: senderId,
+              receiverId: receiverId,
+              fullName: fullName,
+              profilePic: profilePic,
+              email: email,
+              latestMessage: latestMessage,
+              lastMessageTime: lastMessageTime,
+            );
+          }).toList();
+
+          return blockedUsers;
+        } else {
+          print(
+              "Error: Expected a Map in the response data, but got ${response.data.runtimeType}");
+          throw Exception("Expected a Map in the response data.");
+        }
+      } else {
+        print("Error: Response status code is not 200.");
+        throw Exception(
+            "Failed to load blocked users: ${response.statusMessage}");
+      }
+    } on DioException catch (e) {
+      print("DioException occurred: ${e.message}");
+      print("DioException details: ${e.response?.data}");
+      throw Exception("DioException: ${e.message}");
+    } catch (e) {
+      print("Error: $e");
+      throw Exception("Error fetching blocked users: $e");
+    }
+  }
 }

@@ -68,4 +68,29 @@ class ChatRemoteRepository implements IChatRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, void>> unblockUser(
+      String chatId, String? token) async {
+    try {
+      _chatRemoteDatasource.unblockUser(chatId, token);
+      return const Right(null);
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ChatEntity>>> getBlockedUsers() async {
+    try {
+      final blockedUsers = await _chatRemoteDatasource.getBlockedUsers();
+      return Right(blockedUsers);
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
 }

@@ -78,7 +78,6 @@
 //   }
 // }
 
-import 'package:cool_app/core/common/snackbar/my_snackbar.dart';
 import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
 import 'package:cool_app/features/home/presentation/view_model/home_cubit.dart';
 import 'package:cool_app/features/home/presentation/view_model/home_state.dart';
@@ -98,21 +97,11 @@ class HomeView extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Chattix'),
+              title: const Text(
+                'Chattix',
+                style: TextStyle(fontSize: 23),
+              ),
               centerTitle: true,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.logout),
-                  onPressed: () {
-                    showMySnackBar(
-                      context: context,
-                      message: 'Logging out...',
-                      color: Colors.red,
-                    );
-                    context.read<HomeCubit>().logout(context);
-                  },
-                ),
-              ],
             ),
             body: state.views[state.selectedIndex], // Show the selected tab
             bottomNavigationBar: BottomNavigationBar(

@@ -14,4 +14,8 @@ abstract interface class IChatRepository {
   Future<Either<Failure, void>> deleteChat(String chatId, String? token);
 
   Future<Either<Failure, void>> blockUser(String chatId, String? token);
+
+  Future<Either<Failure, void>> unblockUser(String chatId, String? token);
+
+  Future<Either<Failure, List<ChatEntity>>> getBlockedUsers();
 }

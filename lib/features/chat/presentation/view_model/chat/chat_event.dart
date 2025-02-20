@@ -42,3 +42,14 @@ final class BlockUser extends ChatEvent {
   @override
   List<Object> get props => [chatId];
 }
+
+final class UnBlockUser extends ChatEvent {
+  final String chatId;
+
+  UnBlockUser(this.chatId);
+
+  @override
+  List<Object> get props => [chatId];
+}
+
+class LoadBlockedUsers extends ChatEvent {}

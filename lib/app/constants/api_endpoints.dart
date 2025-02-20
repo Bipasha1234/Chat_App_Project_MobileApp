@@ -21,4 +21,9 @@ class ApiEndpoints {
   static const String deleteChat = "messages/delete/";
   //to bloc the user//
   static const String blockUser = "messages/users/block/";
+
+  //to unblock the blocked user//
+  static const String unblockUser = "messages/users/unblock/";
+
+  static const String getBlockedUsers = "messages/users/blocked";
 }
