@@ -40,4 +40,18 @@ class ChatRemoteRepository implements IChatRepository {
       return Left(ApiFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteChat(String chatId, String? token) async {
+    try {
+      _chatRemoteDatasource.deleteChat(chatId, token);
+      return const Right(null);
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(),
+        ),
+      );
+    }
+  }
 }

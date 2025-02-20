@@ -10,4 +10,6 @@ abstract interface class IChatRepository {
 
   Future<Either<Failure, List<ChatEntity>>> getMessages(
       String chatId, String? token);
+
+  Future<Either<Failure, void>> deleteChat(String chatId, String? token);
 }

@@ -1,4 +1,5 @@
 import 'package:cool_app/features/chat/domain/entity/chat_entity.dart';
+import 'package:cool_app/features/chat/domain/use_case/delete_chat.dart';
 import 'package:cool_app/features/chat/domain/use_case/get_messages.dart';
 import 'package:cool_app/features/chat/domain/use_case/get_user_sidebar.dart';
 import 'package:cool_app/features/chat/domain/use_case/send_message.dart';
@@ -12,18 +13,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetUsersForSidebarUseCase _getUsersForSidebarUseCase;
   final SendMessageUseCase _sendMessageUseCase;
   final GetMessagesUseCase _getMessagesUseCase;
+  final DeleteChatUsecase _deleteChatUsecase;
 
   ChatBloc({
     required GetUsersForSidebarUseCase getUsersForSidebarUseCase,
     required SendMessageUseCase sendMessageUseCase,
     required GetMessagesUseCase getMessagesUseCase,
+    required DeleteChatUsecase deleteChatUsecase,
   })  : _getUsersForSidebarUseCase = getUsersForSidebarUseCase,
         _sendMessageUseCase = sendMessageUseCase,
         _getMessagesUseCase = getMessagesUseCase,
+        _deleteChatUsecase = deleteChatUsecase,
         super(ChatState.initial()) {
     on<LoadGetUser>(_onLoadGetUser);
     on<SendMessage>(_onSendMessage);
     on<LoadMessages>(_onLoadMessages);
+    on<DeleteChat>(_onDeleteChat);
   }
 
   // Loading users with improved error handling
@@ -113,5 +118,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ));
       print("Error in _onLoadMessages: $e");
     }
+  }
+
+  Future<void> _onDeleteChat(DeleteChat event, Emitter<ChatState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final result =
+        await _deleteChatUsecase.call(DeleteChatParams(chatId: event.chatId));
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(isLoading: false, error: failure.message)),
+      (batches) {
+        emit(state.copyWith(isLoading: false, error: null));
+        // add(LoadChats());
+      },
+    );
   }
 }

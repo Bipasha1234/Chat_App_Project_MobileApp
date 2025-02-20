@@ -1,7 +1,7 @@
 import 'package:cool_app/app/di/di.dart';
 import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
 import 'package:cool_app/features/chat/presentation/view/chat_view.dart';
-import 'package:cool_app/features/chat/presentation/view_model/login/chat_bloc.dart';
+import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.dart';
 import 'package:cool_app/features/home/presentation/view/bottom_view/profile/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

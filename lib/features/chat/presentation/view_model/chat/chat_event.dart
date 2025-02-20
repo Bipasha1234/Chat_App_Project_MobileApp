@@ -24,3 +24,12 @@ class LoadMessages extends ChatEvent {
   @override
   List<Object?> get props => [chatId];
 }
+
+final class DeleteChat extends ChatEvent {
+  final String chatId;
+
+  DeleteChat(this.chatId);
+
+  @override
+  List<Object> get props => [chatId];
+}

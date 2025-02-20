@@ -9,4 +9,6 @@ abstract interface class IChatDataSource {
 
   // New method to get messages for a specific chat (e.g., by chat ID or user ID)
   Future<List<ChatEntity>> getMessages(String chatId, String? token);
+
+  Future<void> deleteChat(String chatId, String? token);
 }

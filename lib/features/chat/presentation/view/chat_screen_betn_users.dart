@@ -1,7 +1,7 @@
 import 'package:cool_app/app/constants/api_endpoints.dart';
 import 'package:cool_app/app/shared_prefs/token_shared_prefs.dart';
 import 'package:cool_app/features/chat/domain/entity/chat_entity.dart';
-import 'package:cool_app/features/chat/presentation/view_model/login/chat_bloc.dart';
+import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart'; // For decoding JWT
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -132,7 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: const Icon(Icons.delete, size: 20),
               label: const Text('Delete Chat'),
               onPressed: () {
-                // _chatBloc.add(DeleteChat(widget.user.userId));
+                _chatBloc.add(DeleteChat(widget.user.userId));
                 Navigator.pop(context);
               },
             ),
