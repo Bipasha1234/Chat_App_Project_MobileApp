@@ -14,6 +14,7 @@ import 'package:cool_app/features/auth/presentation/view_model/login/login_bloc.
 import 'package:cool_app/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:cool_app/features/chat/data/data_source/chat_remote_datasource.dart';
 import 'package:cool_app/features/chat/data/repository/chat_remote_repository.dart';
+import 'package:cool_app/features/chat/domain/use_case/block_user.dart';
 import 'package:cool_app/features/chat/domain/use_case/delete_chat.dart';
 import 'package:cool_app/features/chat/domain/use_case/get_messages.dart';
 import 'package:cool_app/features/chat/domain/use_case/get_user_sidebar.dart';
@@ -160,12 +161,19 @@ _initChatDependencies() async {
       tokenSharedPrefs: getIt<TokenSharedPrefs>(),
     ),
   );
+  getIt.registerLazySingleton<BlockUserUsecase>(
+    () => BlockUserUsecase(
+      chatRepository: getIt<ChatRemoteRepository>(),
+      tokenSharedPrefs: getIt<TokenSharedPrefs>(),
+    ),
+  );
 
   getIt.registerFactory<ChatBloc>(
     () => ChatBloc(
         getUsersForSidebarUseCase: getIt(),
         sendMessageUseCase: getIt(),
         getMessagesUseCase: getIt(),
-        deleteChatUsecase: getIt()),
+        deleteChatUsecase: getIt(),
+        blockUserUsecase: getIt()),
   );
 }

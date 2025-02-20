@@ -19,4 +19,6 @@ class ApiEndpoints {
   static const String getMessages = "messages/";
   //--chat route for deleteChat added --///
   static const String deleteChat = "messages/delete/";
+  //to bloc the user//
+  static const String blockUser = "messages/users/block/";
 }

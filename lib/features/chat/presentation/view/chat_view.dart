@@ -5,7 +5,7 @@ import 'package:cool_app/features/chat/presentation/view/chat_screen_betn_users.
 import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart'; // For formatting the date
+import 'package:intl/intl.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});
@@ -64,9 +64,12 @@ class _ChatViewState extends State<ChatView> {
                             leading: CircleAvatar(
                               radius:
                                   25, // Adjust the radius to your preference
-                              backgroundImage: NetworkImage(
-                                '${ApiEndpoints.imageUrl}/${user.profilePic}', // Assuming profilePic is the image filename
-                              ),
+                              backgroundImage: user.profilePic.isNotEmpty
+                                  ? NetworkImage(
+                                      '${ApiEndpoints.imageUrl}/${user.profilePic}')
+                                  : const AssetImage(
+                                      'assets/images/user.png'), // Fallback to local asset image
+
                               backgroundColor:
                                   Colors.grey[200], // Default color if no image
                             ),

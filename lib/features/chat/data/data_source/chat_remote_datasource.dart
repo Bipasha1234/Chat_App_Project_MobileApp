@@ -261,4 +261,28 @@ class ChatRemoteDataSource implements IChatDataSource {
       throw Exception(e);
     }
   }
+
+  @override
+  Future<void> blockUser(String chatId, String? token) async {
+    try {
+      var response = await dio.post(
+        ApiEndpoints.blockUser + chatId,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

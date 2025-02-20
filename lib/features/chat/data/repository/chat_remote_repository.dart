@@ -54,4 +54,18 @@ class ChatRemoteRepository implements IChatRepository {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, void>> blockUser(String chatId, String? token) async {
+    try {
+      _chatRemoteDatasource.blockUser(chatId, token);
+      return const Right(null);
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(),
+        ),
+      );
+    }
+  }
 }

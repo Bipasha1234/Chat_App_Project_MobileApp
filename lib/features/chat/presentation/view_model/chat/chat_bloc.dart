@@ -1,4 +1,5 @@
 import 'package:cool_app/features/chat/domain/entity/chat_entity.dart';
+import 'package:cool_app/features/chat/domain/use_case/block_user.dart';
 import 'package:cool_app/features/chat/domain/use_case/delete_chat.dart';
 import 'package:cool_app/features/chat/domain/use_case/get_messages.dart';
 import 'package:cool_app/features/chat/domain/use_case/get_user_sidebar.dart';
@@ -14,21 +15,25 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final SendMessageUseCase _sendMessageUseCase;
   final GetMessagesUseCase _getMessagesUseCase;
   final DeleteChatUsecase _deleteChatUsecase;
+  final BlockUserUsecase _blockUserUsecase;
 
   ChatBloc({
     required GetUsersForSidebarUseCase getUsersForSidebarUseCase,
     required SendMessageUseCase sendMessageUseCase,
     required GetMessagesUseCase getMessagesUseCase,
     required DeleteChatUsecase deleteChatUsecase,
+    required BlockUserUsecase blockUserUsecase,
   })  : _getUsersForSidebarUseCase = getUsersForSidebarUseCase,
         _sendMessageUseCase = sendMessageUseCase,
         _getMessagesUseCase = getMessagesUseCase,
         _deleteChatUsecase = deleteChatUsecase,
+        _blockUserUsecase = blockUserUsecase,
         super(ChatState.initial()) {
     on<LoadGetUser>(_onLoadGetUser);
     on<SendMessage>(_onSendMessage);
     on<LoadMessages>(_onLoadMessages);
     on<DeleteChat>(_onDeleteChat);
+    on<BlockUser>(_onBlockUser);
   }
 
   // Loading users with improved error handling
@@ -129,7 +134,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           emit(state.copyWith(isLoading: false, error: failure.message)),
       (batches) {
         emit(state.copyWith(isLoading: false, error: null));
-        // add(LoadChats());
+      },
+    );
+  }
+
+  Future<void> _onBlockUser(BlockUser event, Emitter<ChatState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final result =
+        await _blockUserUsecase.call(BlockUserParams(chatId: event.chatId));
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(isLoading: false, error: failure.message)),
+      (batches) {
+        emit(state.copyWith(isLoading: false, error: null));
       },
     );
   }

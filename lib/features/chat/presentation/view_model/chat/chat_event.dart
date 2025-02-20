@@ -33,3 +33,12 @@ final class DeleteChat extends ChatEvent {
   @override
   List<Object> get props => [chatId];
 }
+
+final class BlockUser extends ChatEvent {
+  final String chatId;
+
+  BlockUser(this.chatId);
+
+  @override
+  List<Object> get props => [chatId];
+}

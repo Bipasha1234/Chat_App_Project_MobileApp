@@ -103,37 +103,73 @@ class _ChatScreenState extends State<ChatScreen> {
             const SizedBox(height: 12),
             Text(
               widget.user.fullName,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 6),
             Text(
               'Email: ${widget.user.email ?? 'Not available'}',
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: const TextStyle(fontSize: 15, color: Colors.grey),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red, // Button color
-                foregroundColor: Colors.white, // Text/Icon color
+            const SizedBox(height: 15),
+
+            // Delete Chat Button
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red, // Text/Icon color
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                elevation: 3,
               ).copyWith(
                 overlayColor: WidgetStateProperty.resolveWith((states) {
                   if (states.contains(WidgetState.hovered)) {
-                    return Colors.red.shade300; // Light red on hover
+                    return Colors.red.shade100; // Light red on hover
                   }
                   return null;
                 }),
+                mouseCursor: WidgetStateProperty.all(
+                    SystemMouseCursors.click), // Cursor change
               ),
-              icon: const Icon(Icons.delete, size: 20),
-              label: const Text('Delete Chat'),
+              icon: const Icon(Icons.delete,
+                  color: Colors.red, size: 26), // Red delete icon
+              label: const Text(
+                'Delete Chat',
+                style: TextStyle(fontSize: 21),
+              ),
               onPressed: () {
-                _chatBloc.add(DeleteChat(widget.user.userId));
-                Navigator.pop(context);
+                _chatBloc.add(DeleteChat(widget.user.userId)); // Dispatch event
+                Navigator.pop(context); // Close dialog
+              },
+            ),
+
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red, // Text/Icon color
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ).copyWith(
+                overlayColor: WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.hovered)) {
+                    return Colors.red.shade100; // Light red on hover
+                  }
+                  return null;
+                }),
+                mouseCursor: WidgetStateProperty.all(
+                    SystemMouseCursors.click), // Cursor change
+              ),
+              icon: const Icon(Icons.block,
+                  color: Colors.red, size: 24), // Red delete icon
+              label: const Text(
+                'Block User',
+                style: TextStyle(fontSize: 21),
+              ),
+              onPressed: () {
+                _chatBloc.add(BlockUser(widget.user.userId)); // Dispatch event
+                Navigator.pop(context); // Close dialog
               },
             ),
           ],
