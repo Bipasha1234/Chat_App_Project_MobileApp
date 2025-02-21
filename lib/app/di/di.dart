@@ -1,4 +1,5 @@
 import 'package:cool_app/app/shared_prefs/token_shared_prefs.dart';
+import 'package:cool_app/core/common/internet_checker/internet_checker.dart';
 import 'package:cool_app/core/network/api_service.dart';
 import 'package:cool_app/core/network/hive_service.dart';
 import 'package:cool_app/features/auth/data/data_source/auth_local_datasource.dart';
@@ -48,6 +49,12 @@ Future<void> initDependencies() async {
   // Initialize Onboarding and Splash related services last
   await _initSplashScreenDependencies();
   await _initOnboardingScreenDependencies();
+  _initInternetConnectivity();
+}
+
+void _initInternetConnectivity() {
+  getIt.registerLazySingleton<InternetConnectivity>(
+      () => InternetConnectivity());
 }
 
 Future<void> _initSharedPreferences() async {

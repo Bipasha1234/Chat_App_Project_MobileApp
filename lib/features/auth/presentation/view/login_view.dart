@@ -1,16 +1,106 @@
+import 'dart:async';
+
 import 'package:cool_app/features/auth/presentation/view/register_view.dart';
 import 'package:cool_app/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-class LoginView extends StatelessWidget {
-  LoginView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
+  @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
 
   final _gap = const SizedBox(height: 20);
+
+  late StreamSubscription _subscription;
+  bool isDeviceConnected = false;
+  bool showInternetDialog = false; // Flag to control dialog visibility
+
+  @override
+  void initState() {
+    super.initState();
+    _checkConnectivity();
+  }
+
+  _checkConnectivity() async {
+    // Check internet connection initially
+    isDeviceConnected = await InternetConnectionChecker().hasConnection;
+    if (!isDeviceConnected) {
+      _showNoInternetDialog();
+    }
+
+    // Listen to connectivity changes
+    _subscription = InternetConnectionChecker().onStatusChange.listen(
+      (status) {
+        isDeviceConnected = (status == InternetConnectionStatus.connected);
+        if (!isDeviceConnected && !showInternetDialog) {
+          _showNoInternetDialog();
+        } else if (isDeviceConnected && showInternetDialog) {
+          _showInternetBackDialog();
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+
+  // Show the dialog if no internet connection
+  _showNoInternetDialog() {
+    setState(() {
+      showInternetDialog = true;
+    });
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Can't dismiss without clicking OK
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('No Internet Connection'),
+        content: const Text('Please check your internet connectivity.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Show dialog when internet connection is back
+  _showInternetBackDialog() {
+    setState(() {
+      showInternetDialog = false;
+    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Internet Back'),
+        content: const Text(
+            'Your internet connection is back. You can continue now.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,13 +217,17 @@ class LoginView extends StatelessWidget {
                         ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            context.read<LoginBloc>().add(
-                                  LoginUserEvent(
-                                    context: context,
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                  ),
-                                );
+                            if (isDeviceConnected) {
+                              context.read<LoginBloc>().add(
+                                    LoginUserEvent(
+                                      context: context,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    ),
+                                  );
+                            } else {
+                              _showNoInternetDialog();
+                            }
                           }
                         },
                         child: const Text(

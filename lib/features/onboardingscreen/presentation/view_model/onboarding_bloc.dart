@@ -9,7 +9,7 @@ class OnboardingBloc extends Cubit<void> {
   final LoginBloc _loginBloc;
 
   Future<void> init(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 8), () async {
+    await Future.delayed(const Duration(seconds: 30), () async {
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
