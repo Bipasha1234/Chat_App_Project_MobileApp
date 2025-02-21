@@ -37,6 +37,14 @@ class _ChatViewState extends State<ChatView> {
           style: TextStyle(fontSize: 23),
         ),
         centerTitle: true,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 20, 20, 20)
+            : const Color.fromARGB(255, 117, 198, 171),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
+        ),
       ),
       body: BlocListener<ChatBloc, ChatState>(
         listener: (context, state) {

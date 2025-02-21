@@ -189,26 +189,29 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    // Get current theme
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Profile',
+          style: TextStyle(fontSize: 23),
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 20, 20, 20)
+            : const Color.fromARGB(255, 117, 198, 171),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Row(
-              children: [
-                SizedBox(width: 8),
-                Text(
-                  'Profile - Manage your profile',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-
+            const SizedBox(height: 20),
             Stack(
               clipBehavior: Clip.none, // This allows the icon to go outside
               children: [
@@ -231,9 +234,9 @@ class _ProfileViewState extends State<ProfileView> {
                   right: -1,
                   child: GestureDetector(
                     onTap: _pickImage,
-                    child: const Icon(
+                    child: Icon(
                       Icons.camera_alt,
-                      color: Color.fromARGB(255, 58, 172, 134),
+                      color: theme.iconTheme.color,
                       size: 46,
                     ),
                   ),
@@ -243,9 +246,10 @@ class _ProfileViewState extends State<ProfileView> {
             const SizedBox(height: 14),
             Text(
               'Click the camera icon to update the photo',
-              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              style:
+                  theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 15),
             // Conditionally show the edit fields
             Column(
               children: [
@@ -256,15 +260,29 @@ class _ProfileViewState extends State<ProfileView> {
                       child: TextField(
                         controller: _nameController,
                         readOnly: !_isEditing,
-                        decoration: const InputDecoration(
+                        style: theme.textTheme.bodyLarge,
+                        decoration: InputDecoration(
                           labelText: 'Full Name',
-                          border: OutlineInputBorder(),
+                          labelStyle: theme.textTheme.bodyMedium
+                              ?.copyWith(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: theme.dividerColor),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: theme.dividerColor),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: theme.primaryColor),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                       ),
                     ),
                     if (!_isEditing)
                       IconButton(
-                        icon: const Icon(Icons.edit),
+                        icon: Icon(Icons.edit, color: theme.iconTheme.color),
                         onPressed: () {
                           setState(() {
                             _isEditing = true;
@@ -281,15 +299,29 @@ class _ProfileViewState extends State<ProfileView> {
                       child: TextField(
                         controller: _emailController,
                         readOnly: !_isEditing,
-                        decoration: const InputDecoration(
+                        style: theme.textTheme.bodyLarge,
+                        decoration: InputDecoration(
                           labelText: 'Email',
-                          border: OutlineInputBorder(),
+                          labelStyle: theme.textTheme.bodyMedium
+                              ?.copyWith(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: theme.dividerColor),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: theme.dividerColor),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: theme.primaryColor),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                       ),
                     ),
                     if (!_isEditing)
                       IconButton(
-                        icon: const Icon(Icons.edit),
+                        icon: Icon(Icons.edit, color: theme.iconTheme.color),
                         onPressed: () {
                           setState(() {
                             _isEditing = true;
@@ -306,9 +338,24 @@ class _ProfileViewState extends State<ProfileView> {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _updateProfile,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme
+                            .primaryColor, // You can change this to any color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              8), // To give rounded corners
+                        ),
+                      ),
                       child: _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text('Update Profile'),
+                          : Text(
+                              'Update Profile',
+                              style: theme.textTheme.labelLarge?.copyWith(
+                                fontSize: 18, // Increase the font size
+                                fontWeight:
+                                    FontWeight.bold, // Make the text bold
+                              ),
+                            ),
                     ),
                   ),
               ],
