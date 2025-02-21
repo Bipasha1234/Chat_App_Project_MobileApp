@@ -4,7 +4,7 @@ import 'package:cool_app/features/auth/domain/use_case/get_current_user_usecase.
 import 'package:cool_app/features/auth/domain/use_case/login_usecase.dart';
 import 'package:cool_app/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:cool_app/features/home/presentation/view/home_view.dart';
-import 'package:cool_app/features/home/presentation/view_model/home_cubit.dart';
+import 'package:cool_app/features/home/presentation/view_model/home_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

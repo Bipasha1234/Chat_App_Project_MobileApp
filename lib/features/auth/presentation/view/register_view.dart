@@ -15,10 +15,9 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController(text: 'bipasha');
-  final _emailController =
-      TextEditingController(text: 'bipashalamsal@gmail.com');
-  final _passwordController = TextEditingController(text: '123456');
+  final _fullNameController = TextEditingController(text: '');
+  final _emailController = TextEditingController(text: '');
+  final _passwordController = TextEditingController(text: '');
 
   final _gap = const SizedBox(height: 20);
 
@@ -134,14 +133,19 @@ class _RegisterViewState extends State<RegisterView> {
                           );
                         },
                         child: SizedBox(
-                          height: 220,
-                          width: 220,
+                          height: 150,
+                          width: 150,
                           child: CircleAvatar(
-                            radius: 55,
-                            backgroundImage: _img != null
-                                ? FileImage(_img!)
-                                : const AssetImage('assets/images/user.png')
-                                    as ImageProvider,
+                            radius: 70,
+                            // backgroundColor: Colors.grey
+                            //     .shade200,
+                            child: CircleAvatar(
+                              radius: 65,
+                              backgroundImage: _img != null
+                                  ? FileImage(_img!)
+                                  : const AssetImage('assets/images/user.png')
+                                      as ImageProvider,
+                            ),
                           ),
                         ),
                       ),

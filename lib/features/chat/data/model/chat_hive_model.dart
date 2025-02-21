@@ -38,9 +38,13 @@ class ChatHiveModel extends Equatable {
   final DateTime? createdAt;
 
   @HiveField(13)
-  final String? email; // Added email field
+  final String? email;
 
-  const ChatHiveModel({
+  // New field for blocking users
+  @HiveField(14)
+  bool isBlocked; // This field will track if the user is blocked or not
+
+  ChatHiveModel({
     required this.userId,
     required this.senderId,
     required this.receiverId,
@@ -54,7 +58,8 @@ class ChatHiveModel extends Equatable {
     this.document,
     this.documentName,
     this.createdAt,
-    this.email, // Added email to constructor
+    this.email,
+    this.isBlocked = false, // Default is false
   });
 
   // Initial Constructor
@@ -72,7 +77,8 @@ class ChatHiveModel extends Equatable {
         document = null,
         documentName = null,
         createdAt = DateTime.now(),
-        email = null; // Set initial value for email
+        email = null,
+        isBlocked = false; // Default value for isBlocked
 
   // From Entity
   factory ChatHiveModel.fromEntity(ChatEntity entity) {
@@ -90,7 +96,8 @@ class ChatHiveModel extends Equatable {
       document: entity.document,
       documentName: entity.documentName,
       createdAt: entity.createdAt,
-      email: entity.email, // Map email from entity
+      email: entity.email,
+      isBlocked: false, // Default value
     );
   }
 
@@ -110,7 +117,7 @@ class ChatHiveModel extends Equatable {
       document: document,
       documentName: documentName,
       createdAt: createdAt,
-      email: email ?? '', // Include email field in entity
+      email: email ?? '',
     );
   }
 
@@ -129,6 +136,7 @@ class ChatHiveModel extends Equatable {
         document,
         documentName,
         createdAt,
-        email, // Include email in equality check
+        email,
+        isBlocked, // Include isBlocked in equality check
       ];
 }

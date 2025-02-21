@@ -31,6 +31,13 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Chat',
+          style: TextStyle(fontSize: 23),
+        ),
+        centerTitle: true,
+      ),
       body: BlocListener<ChatBloc, ChatState>(
         listener: (context, state) {
           if (state.error != null) {

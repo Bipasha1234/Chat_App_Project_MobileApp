@@ -46,9 +46,6 @@ class ChatRemoteDataSource implements IChatDataSource {
         ),
       );
 
-      print("Response status: ${response.statusCode}");
-      print("Response data: ${response.data}");
-
       if (response.statusCode == 200) {
         List<dynamic> usersJson = response.data ?? [];
         List<ChatEntity> users = usersJson.map((json) {

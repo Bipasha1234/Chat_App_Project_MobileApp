@@ -1,7 +1,7 @@
 import 'package:cool_app/app/di/di.dart';
 import 'package:cool_app/core/theme/app_theme.dart';
-import 'package:cool_app/features/auth/presentation/view/login_view.dart';
-import 'package:cool_app/features/auth/presentation/view_model/login/login_bloc.dart';
+import 'package:cool_app/features/splash/presentation/view/splash_view.dart';
+import 'package:cool_app/features/splash/presentation/view_model/splash_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +15,8 @@ class App extends StatelessWidget {
       title: 'Chat App',
       theme: AppTheme.getApplicationTheme(isDarkMode: false),
       home: BlocProvider.value(
-        value: getIt<LoginBloc>(),
-        child: LoginView(),
+        value: getIt<SplashCubit>(),
+        child: const SplashView(),
       ),
     );
   }

@@ -12,7 +12,9 @@ import 'package:cool_app/features/auth/domain/use_case/register_user_usecase.dar
 import 'package:cool_app/features/auth/domain/use_case/upload_image_usecase.dart';
 import 'package:cool_app/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:cool_app/features/auth/presentation/view_model/signup/register_bloc.dart';
+import 'package:cool_app/features/chat/data/data_source/chat_local_datasource.dart';
 import 'package:cool_app/features/chat/data/data_source/chat_remote_datasource.dart';
+import 'package:cool_app/features/chat/data/repository/chat_local_repository.dart';
 import 'package:cool_app/features/chat/data/repository/chat_remote_repository.dart';
 import 'package:cool_app/features/chat/domain/use_case/block_user.dart';
 import 'package:cool_app/features/chat/domain/use_case/delete_chat.dart';
@@ -22,21 +24,30 @@ import 'package:cool_app/features/chat/domain/use_case/get_user_sidebar.dart';
 import 'package:cool_app/features/chat/domain/use_case/send_message.dart';
 import 'package:cool_app/features/chat/domain/use_case/unblock_user.dart';
 import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.dart';
-import 'package:cool_app/features/home/presentation/view_model/home_cubit.dart';
+import 'package:cool_app/features/home/presentation/view_model/home_bloc.dart';
+import 'package:cool_app/features/onboardingscreen/presentation/view_model/onboarding_bloc.dart';
+import 'package:cool_app/features/splash/presentation/view_model/splash_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
-
 Future<void> initDependencies() async {
   await _initHiveService();
   await _initApiService();
   await _initSharedPreferences();
-  await _initHomeDependencies();
+
+  // Initialize Auth and related services first
   await _initRegisterDependencies();
   await _initLoginDependencies();
+
+  // Then initialize Home and Chat dependencies
+  await _initHomeDependencies();
   await _initChatDependencies();
+
+  // Initialize Onboarding and Splash related services last
+  await _initSplashScreenDependencies();
+  await _initOnboardingScreenDependencies();
 }
 
 Future<void> _initSharedPreferences() async {
@@ -93,13 +104,12 @@ _initRegisterDependencies() {
   );
 }
 
+//-home--//
 _initHomeDependencies() {
-  // Register AuthEntity first
   getIt.registerSingleton<AuthEntity>(
     const AuthEntity(email: '', fullName: '', password: ''),
   );
 
-  // Register HomeCubit and pass AuthEntity instance
   getIt.registerFactory<HomeCubit>(
     () => HomeCubit(getIt<AuthEntity>()),
   );
@@ -128,11 +138,15 @@ _initLoginDependencies() async {
   );
 }
 
+//---chat---///
 _initChatDependencies() async {
-  // getIt.registerLazySingleton<TokenSharedPrefs>(
-  //   () => TokenSharedPrefs(getIt<SharedPreferences>()),
-  // );
+  getIt.registerLazySingleton(
+    () => ChatLocalDataSource(getIt<HiveService>()),
+  );
 
+  getIt.registerLazySingleton(
+    () => ChatLocalRepository(getIt<ChatLocalDataSource>()),
+  );
   getIt.registerLazySingleton<ChatRemoteDataSource>(
       () => ChatRemoteDataSource(dio: getIt<Dio>()));
 
@@ -190,5 +204,17 @@ _initChatDependencies() async {
         blockUserUsecase: getIt(),
         unblockUserUsecase: getIt(),
         getblockedUserUsecase: getIt()),
+  );
+}
+
+_initSplashScreenDependencies() async {
+  getIt.registerFactory<SplashCubit>(
+    () => SplashCubit(getIt<OnboardingBloc>()),
+  );
+}
+
+_initOnboardingScreenDependencies() async {
+  getIt.registerFactory<OnboardingBloc>(
+    () => OnboardingBloc(getIt<LoginBloc>()),
   );
 }

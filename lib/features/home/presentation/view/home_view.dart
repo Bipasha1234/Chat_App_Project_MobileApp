@@ -79,7 +79,7 @@
 // }
 
 import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
-import 'package:cool_app/features/home/presentation/view_model/home_cubit.dart';
+import 'package:cool_app/features/home/presentation/view_model/home_bloc.dart';
 import 'package:cool_app/features/home/presentation/view_model/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,19 +96,17 @@ class HomeView extends StatelessWidget {
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text(
-                'Chattix',
-                style: TextStyle(fontSize: 23),
-              ),
-              centerTitle: true,
-            ),
+            // appBar: AppBar(
+            // title: const Text(
+            //   'Chattix',
+            //   style: TextStyle(fontSize: 23),
+            // ),
+            // centerTitle: true,
+            // ),
             body: state.views[state.selectedIndex], // Show the selected tab
             bottomNavigationBar: BottomNavigationBar(
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.group), label: 'Groups'),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.face), label: 'Profile'),
                 BottomNavigationBarItem(

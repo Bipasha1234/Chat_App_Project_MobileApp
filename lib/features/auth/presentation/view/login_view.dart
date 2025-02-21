@@ -146,18 +146,6 @@ class LoginView extends StatelessWidget {
                         ),
                       ),
                       Align(
-                        alignment: Alignment.center,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {

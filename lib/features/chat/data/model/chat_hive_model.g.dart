@@ -31,13 +31,14 @@ class ChatHiveModelAdapter extends TypeAdapter<ChatHiveModel> {
       documentName: fields[11] as String?,
       createdAt: fields[12] as DateTime?,
       email: fields[13] as String?,
+      isBlocked: fields[14] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, ChatHiveModel obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
@@ -65,7 +66,9 @@ class ChatHiveModelAdapter extends TypeAdapter<ChatHiveModel> {
       ..writeByte(12)
       ..write(obj.createdAt)
       ..writeByte(13)
-      ..write(obj.email);
+      ..write(obj.email)
+      ..writeByte(14)
+      ..write(obj.isBlocked);
   }
 
   @override
