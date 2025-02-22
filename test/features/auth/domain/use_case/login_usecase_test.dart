@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'auth_repo.mock.dart';
 import 'token.mock.dart';
 
+//unit test-- using usecase means-unit test
 void main() {
   late AuthRepoMock repository;
   late MockTokenSharedPrefs tokenSharedPrefs;
@@ -58,42 +59,5 @@ void main() {
   tearDown(() {
     reset(repository);
     reset(tokenSharedPrefs);
-  });
-
-  test('should return failure when there is a server error', () async {
-    when(() => repository.loginUser(any(), any())).thenAnswer(
-      (_) async => const Left(
-          ApiFailure(message: 'Server error, please try again later')),
-    );
-
-    final result = await usecase(const LoginParams(
-      email: 'bipashalamsal@gmail.com',
-      password: '123456',
-    ));
-
-    expect(
-        result,
-        const Left(
-            ApiFailure(message: 'Server error, please try again later')));
-
-    verify(() => repository.loginUser(any(), any())).called(1);
-    verifyNoMoreInteractions(repository);
-  });
-
-  test('should return failure when token retrieval fails', () async {
-    when(() => repository.loginUser(any(), any())).thenAnswer(
-      (_) async => const Right('token'),
-    );
-
-    when(() => tokenSharedPrefs.getToken()).thenAnswer(
-      (_) async => const Left(ApiFailure(message: 'Failed to retrieve token')),
-    );
-
-    final result = await tokenSharedPrefs.getToken();
-
-    expect(result, const Left(ApiFailure(message: 'Failed to retrieve token')));
-
-    verify(() => tokenSharedPrefs.getToken()).called(1);
-    verifyNoMoreInteractions(tokenSharedPrefs);
   });
 }

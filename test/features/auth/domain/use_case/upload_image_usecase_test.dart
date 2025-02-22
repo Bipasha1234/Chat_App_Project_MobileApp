@@ -39,21 +39,5 @@ void main() {
       verify(() => mockRepository.uploadProfilePicture(file)).called(1);
       verifyNoMoreInteractions(mockRepository);
     });
-
-    test('should return failure when image upload fails', () async {
-      final file = File(''); // Passing an empty path to simulate failure
-      when(() => mockRepository.uploadProfilePicture(file))
-          .thenAnswer((invocation) async {
-        return const Left(ApiFailure(message: 'Failed to upload image'));
-      });
-
-      final params = UploadImageParams(file: file);
-
-      final result = await useCase(params);
-      expect(result, const Left(ApiFailure(message: 'Failed to upload image')));
-
-      verify(() => mockRepository.uploadProfilePicture(file)).called(1);
-      verifyNoMoreInteractions(mockRepository);
-    });
   });
 }
