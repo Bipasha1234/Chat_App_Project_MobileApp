@@ -6,9 +6,46 @@ import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.da
 import 'package:cool_app/features/home/presentation/view_model/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
+
+  @override
+  _SettingsViewState createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView> {
+  bool isDarkMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _listenToAccelerometer();
+  }
+
+  void _listenToAccelerometer() {
+    // Listen to accelerometer events
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      if (event.x > 5) {
+        // Tilted to the right, switch to dark mode
+        if (!isDarkMode) {
+          setState(() {
+            isDarkMode = true;
+            context.read<ThemeCubit>().toggleTheme(isDarkMode); // Change theme
+          });
+        }
+      } else if (event.x < -5) {
+        // Tilted to the left, switch to light mode
+        if (isDarkMode) {
+          setState(() {
+            isDarkMode = false;
+            context.read<ThemeCubit>().toggleTheme(isDarkMode); // Change theme
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +74,7 @@ class SettingsView extends StatelessWidget {
                 : Colors.grey[50], // Dynamic background
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 25),
 
@@ -50,98 +87,91 @@ class SettingsView extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
 
                 // Light Theme, Toggle, and Dark Theme section
+
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center, // Centers items
                   children: [
-                    const Text(
-                      "Light Theme",
-                      style: TextStyle(fontSize: 16),
-                    ),
+                    const Text("Light Mode", style: TextStyle(fontSize: 16)),
+                    const SizedBox(width: 10), // Reduce gap
                     Switch(
                       value: isDarkMode,
                       onChanged: (value) {
                         context.read<ThemeCubit>().toggleTheme(value);
                       },
                     ),
-                    const Text(
-                      "Dark Theme",
-                      style: TextStyle(fontSize: 16),
-                    ),
+                    const SizedBox(width: 10), // Reduce gap
+                    const Text("Dark Mode", style: TextStyle(fontSize: 16)),
                   ],
                 ),
 
-                const SizedBox(height: 25), // Add space between sections
-
-                // Divider to separate sections
-                Divider(
-                  color: isDarkMode ? Colors.white70 : Colors.black12,
-                  thickness: 1,
-                ),
-
-                const SizedBox(height: 25),
-
-                // Blocked Users Section
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return BlocProvider(
-                            create: (context) => getIt<ChatBloc>(),
-                            child: const BlockedUsersPage(),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: isDarkMode ? Colors.grey[800] : Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        if (!isDarkMode) // Only show shadow in light mode
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            blurRadius: 5,
-                            spreadRadius: 2,
+// Blocked Users Section
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width > 600
+                      ? 400
+                      : double.infinity, // Limits width on tablets
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return BlocProvider(
+                                create: (context) => getIt<ChatBloc>(),
+                                child: const BlockedUsersPage(),
+                              );
+                            },
                           ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.block,
-                                color:
-                                    isDarkMode ? Colors.redAccent : Colors.red),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Blocked Users',
-                              style: TextStyle(
-                                color:
-                                    isDarkMode ? Colors.redAccent : Colors.red,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 14, horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: isDarkMode ? Colors.grey[800] : Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            if (!isDarkMode)
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 5,
+                                spreadRadius: 2,
                               ),
-                            ),
                           ],
                         ),
-                        Icon(Icons.arrow_forward_ios,
-                            color: isDarkMode ? Colors.white70 : Colors.black54,
-                            size: 20),
-                      ],
-                    ),
-                  ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.block,
+                                    color: isDarkMode
+                                        ? Colors.redAccent
+                                        : Colors.red),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Blocked Users',
+                                  style: TextStyle(
+                                    color: isDarkMode
+                                        ? Colors.redAccent
+                                        : Colors.red,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Icon(Icons.arrow_forward_ios,
+                                color: isDarkMode ? Colors.white70 : Colors.red,
+                                size: 20),
+                          ],
+                        ),
+                      )),
                 ),
-
-                const SizedBox(height: 25),
+                const SizedBox(height: 30),
 
                 // Logout Button
                 Center(
@@ -158,17 +188,20 @@ class SettingsView extends StatelessWidget {
                       backgroundColor:
                           isDarkMode ? Colors.redAccent : Colors.red,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 16),
+                          vertical: 16, horizontal: 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      textStyle: const TextStyle(fontSize: 18),
+                      textStyle: const TextStyle(fontSize: 22),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.logout, color: Colors.white),
-                        SizedBox(width: 8),
+                        Icon(
+                          Icons.logout,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 15),
                         Text('Logout', style: TextStyle(color: Colors.white)),
                       ],
                     ),

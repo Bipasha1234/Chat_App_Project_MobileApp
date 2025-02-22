@@ -9,9 +9,19 @@ class BlockedUsersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Blocked Users'),
-        // backgroundColor:
-        // Colors.blueGrey, // Optional: Set the AppBar color if needed
+        title: const Text(
+          'Blocked Users',
+          style: TextStyle(fontSize: 23),
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 20, 20, 20)
+            : const Color.fromARGB(255, 117, 198, 171),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
+        ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -49,25 +59,59 @@ class BlockedUsersPage extends StatelessWidget {
               itemCount: state.blockedUsers.length,
               itemBuilder: (context, index) {
                 final user = state.blockedUsers[index];
-                return ListTile(
-                  title: Text(
-                    user.fullName,
-                    style: const TextStyle(fontSize: 20),
-                  ), // Assuming `ChatEntity` has a `fullName` field
-                  trailing: TextButton(
-                    onPressed: () {
-                      // Logic for unblocking the user goes here
-                      BlocProvider.of<ChatBloc>(context)
-                          .add(UnBlockUser(user.userId));
-                    },
-                    child: const Text(
-                      'Unblock',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 20, // Red color for unblock text
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.red,
-                      ),
+
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[800]
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.transparent
+                              : Colors.grey.withOpacity(0.3),
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              user.fullName,
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(height: 30),
+                            TextButton(
+                              onPressed: () {
+                                // Logic for unblocking the user goes here
+                                BlocProvider.of<ChatBloc>(context)
+                                    .add(UnBlockUser(user.userId));
+                              },
+                              child: const Text(
+                                'Unblock',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 20, // Red color for unblock text
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.red,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 );

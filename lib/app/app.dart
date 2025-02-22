@@ -13,14 +13,14 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<SplashCubit>()),
-        BlocProvider(create: (context) => ThemeCubit()), // Added ThemeCubit
+        BlocProvider(create: (context) => ThemeCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeData>(
         builder: (context, theme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Chat App',
-            theme: theme, // Dynamic theme applied
+            theme: theme,
             home: const SplashView(),
           );
         },

@@ -1,6 +1,7 @@
-import 'package:cool_app/app/constants/api_endpoints.dart';
+import 'package:cool_app/app/di/di.dart';
 import 'package:cool_app/app/shared_prefs/token_shared_prefs.dart';
 import 'package:cool_app/features/chat/domain/entity/chat_entity.dart';
+import 'package:cool_app/features/chat/presentation/view/chat_delete_block.dart';
 import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart'; // For decoding JWT
 import 'package:flutter/material.dart';
@@ -78,101 +79,13 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void _showUserOptions() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        contentPadding: const EdgeInsets.all(16.0),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 60,
-              backgroundImage: widget.user.profilePic != null
-                  ? NetworkImage(
-                      '${ApiEndpoints.imageUrl}/${widget.user.profilePic}')
-                  : null,
-              child: widget.user.profilePic == null
-                  ? const Icon(Icons.person, size: 60, color: Colors.grey)
-                  : null,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              widget.user.fullName,
-              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'Email: ${widget.user.email ?? 'Not available'}',
-              style: const TextStyle(fontSize: 15, color: Colors.grey),
-            ),
-            const SizedBox(height: 15),
-
-            // Delete Chat Button
-            TextButton.icon(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red, // Text/Icon color
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ).copyWith(
-                overlayColor: WidgetStateProperty.resolveWith((states) {
-                  if (states.contains(WidgetState.hovered)) {
-                    return Colors.red.shade100; // Light red on hover
-                  }
-                  return null;
-                }),
-                mouseCursor: WidgetStateProperty.all(
-                    SystemMouseCursors.click), // Cursor change
-              ),
-              icon: const Icon(Icons.delete,
-                  color: Colors.red, size: 26), // Red delete icon
-              label: const Text(
-                'Delete Chat',
-                style: TextStyle(fontSize: 21),
-              ),
-              onPressed: () {
-                _chatBloc.add(DeleteChat(widget.user.userId)); // Dispatch event
-                Navigator.pop(context); // Close dialog
-              },
-            ),
-
-            TextButton.icon(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red, // Text/Icon color
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ).copyWith(
-                overlayColor: WidgetStateProperty.resolveWith((states) {
-                  if (states.contains(WidgetState.hovered)) {
-                    return Colors.red.shade100; // Light red on hover
-                  }
-                  return null;
-                }),
-                mouseCursor: WidgetStateProperty.all(
-                    SystemMouseCursors.click), // Cursor change
-              ),
-              icon: const Icon(Icons.block,
-                  color: Colors.red, size: 24), // Red delete icon
-              label: const Text(
-                'Block User',
-                style: TextStyle(fontSize: 21),
-              ),
-              onPressed: () {
-                _chatBloc.add(BlockUser(widget.user.userId)); // Dispatch event
-                Navigator.pop(context); // Close dialog
-              },
-            ),
-          ],
+  void _navigateToUserDetails() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BlocProvider(
+          create: (context) => getIt<ChatBloc>(),
+          child: UserDetailsScreen(user: widget.user),
         ),
       ),
     );
@@ -183,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _showUserOptions, // Show user details on tap
+          onTap: _navigateToUserDetails, // Show user details on tap
           child: Text(widget.user.fullName),
         ),
       ),

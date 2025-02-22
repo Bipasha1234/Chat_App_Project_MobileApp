@@ -189,8 +189,10 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    // Get current theme
     final ThemeData theme = Theme.of(context);
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isTablet = screenWidth > 600; // Adjust threshold for tablets
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -209,159 +211,155 @@ class _ProfileViewState extends State<ProfileView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Stack(
-              clipBehavior: Clip.none, // This allows the icon to go outside
+        child: Center(
+          // Ensures content is centered on wide screens
+          child: SizedBox(
+            width:
+                isTablet ? 500 : double.infinity, // Set max width for tablets
+            child: Column(
               children: [
-                GestureDetector(
-                  onTap: _pickImage, // Open image picker when clicked
-                  child: CircleAvatar(
-                    radius: 100,
-                    backgroundImage: _image != null
-                        ? FileImage(_image!)
-                        : (user.profilePic != null &&
-                                user.profilePic!.isNotEmpty)
-                            ? NetworkImage(
-                                '${ApiEndpoints.imageUrl}${user.profilePic!}') // Use profilePic from ApiEndpoints
-                            : const AssetImage('assets/images/user.png')
-                                as ImageProvider,
-                  ),
-                ),
-                Positioned(
-                  bottom: -2,
-                  right: -1,
-                  child: GestureDetector(
-                    onTap: _pickImage,
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: theme.iconTheme.color,
-                      size: 46,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Text(
-              'Click the camera icon to update the photo',
-              style:
-                  theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 15),
-            // Conditionally show the edit fields
-            Column(
-              children: [
-                // Full Name TextField
-                Row(
+                const SizedBox(height: 25),
+                Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _nameController,
-                        readOnly: !_isEditing,
-                        style: theme.textTheme.bodyLarge,
-                        decoration: InputDecoration(
-                          labelText: 'Full Name',
-                          labelStyle: theme.textTheme.bodyMedium
-                              ?.copyWith(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: theme.dividerColor),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: theme.dividerColor),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: theme.primaryColor),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: CircleAvatar(
+                        radius: 80, // Slightly reduce size for tablets
+                        backgroundImage: _image != null
+                            ? FileImage(_image!)
+                            : (user.profilePic != null &&
+                                    user.profilePic!.isNotEmpty)
+                                ? NetworkImage(
+                                    '${ApiEndpoints.imageUrl}${user.profilePic!}')
+                                : const AssetImage('assets/images/user.png')
+                                    as ImageProvider,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: -2,
+                      right: -1,
+                      child: GestureDetector(
+                        onTap: _pickImage,
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: theme.iconTheme.color,
+                          size: 40, // Adjust icon size for better proportion
                         ),
                       ),
                     ),
-                    if (!_isEditing)
-                      IconButton(
-                        icon: Icon(Icons.edit, color: theme.iconTheme.color),
-                        onPressed: () {
-                          setState(() {
-                            _isEditing = true;
-                          });
-                        },
-                      ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                // Email TextField
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _emailController,
-                        readOnly: !_isEditing,
-                        style: theme.textTheme.bodyLarge,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: theme.textTheme.bodyMedium
-                              ?.copyWith(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: theme.dividerColor),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: theme.dividerColor),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: theme.primaryColor),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (!_isEditing)
-                      IconButton(
-                        icon: Icon(Icons.edit, color: theme.iconTheme.color),
-                        onPressed: () {
-                          setState(() {
-                            _isEditing = true;
-                          });
-                        },
-                      ),
-                  ],
+                const SizedBox(height: 14),
+                Text(
+                  'Click the camera icon to update the photo',
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(color: Colors.grey[600]),
                 ),
-                const SizedBox(height: 20),
-                // Show Save Changes Button only when editing
-                if (_isEditing)
-                  SizedBox(
-                    width: double.infinity,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: _isLoading ? null : _updateProfile,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme
-                            .primaryColor, // You can change this to any color
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              8), // To give rounded corners
+                const SizedBox(height: 25),
+                Column(
+                  children: [
+                    // Full Name Field
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _nameController,
+                            readOnly: !_isEditing,
+                            style: theme.textTheme.bodyLarge,
+                            decoration: _inputDecoration('Full Name', theme),
+                          ),
                         ),
-                      ),
-                      child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : Text(
-                              'Update Profile',
-                              style: theme.textTheme.labelLarge?.copyWith(
-                                fontSize: 18, // Increase the font size
-                                fontWeight:
-                                    FontWeight.bold, // Make the text bold
-                              ),
+                        if (!_isEditing)
+                          IconButton(
+                            icon:
+                                Icon(Icons.edit, color: theme.iconTheme.color),
+                            onPressed: () {
+                              setState(() {
+                                _isEditing = true;
+                              });
+                            },
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    // Email Field
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _emailController,
+                            readOnly: !_isEditing,
+                            style: theme.textTheme.bodyLarge,
+                            decoration: _inputDecoration('Email', theme),
+                          ),
+                        ),
+                        if (!_isEditing)
+                          IconButton(
+                            icon:
+                                Icon(Icons.edit, color: theme.iconTheme.color),
+                            onPressed: () {
+                              setState(() {
+                                _isEditing = true;
+                              });
+                            },
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    // Save Button
+                    if (_isEditing)
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50, // Reduce button height for tablets
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _updateProfile,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                    ),
-                  ),
+                          ),
+                          child: _isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                              : Text(
+                                  'Update Profile',
+                                  style: theme.textTheme.labelLarge?.copyWith(
+                                    fontSize: isTablet
+                                        ? 16
+                                        : 18, // Adjust font size for tablets
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
+      ),
+    );
+  }
+
+// Input decoration function for consistency
+  InputDecoration _inputDecoration(String label, ThemeData theme) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: theme.dividerColor),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: theme.dividerColor),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: theme.primaryColor),
+        borderRadius: BorderRadius.circular(8),
       ),
     );
   }

@@ -104,6 +104,11 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Set a max width for the form container
+    final maxWidth = screenWidth > 600 ? 590.0 : screenWidth * 4.0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF80CBB2),
@@ -117,10 +122,11 @@ class _LoginViewState extends State<LoginView> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          color: Colors.white,
-          child: Center(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            color: Colors.white,
+            constraints: BoxConstraints(maxWidth: maxWidth), // Set max width
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0),
@@ -144,103 +150,118 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       _gap,
-                      TextFormField(
-                        key: const ValueKey('email'),
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: const TextStyle(
-                              color: Color.fromARGB(255, 56, 55, 55)),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                      FractionallySizedBox(
+                        alignment: Alignment.center,
+                        widthFactor: screenWidth > 600 ? 0.8 : 1.0,
+                        child: TextFormField(
+                          key: const ValueKey('email'),
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            labelStyle: const TextStyle(
+                                color: Color.fromARGB(255, 56, 55, 55)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.greenAccent),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade400),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.greenAccent),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey.shade100,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter email';
-                          }
-                          return null;
-                        },
-                      ),
-                      _gap,
-                      TextFormField(
-                        key: const ValueKey('password'),
-                        controller: _passwordController,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          labelStyle: const TextStyle(
-                              color: Color.fromARGB(255, 56, 55, 55)),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.greenAccent),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey.shade100,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter password';
-                          }
-                          return null;
-                        },
-                      ),
-                      _gap,
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          backgroundColor: const Color(0xFF80CBB2),
-                          shadowColor: Colors.grey.withOpacity(0.3),
-                          elevation: 5,
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            if (isDeviceConnected) {
-                              context.read<LoginBloc>().add(
-                                    LoginUserEvent(
-                                      context: context,
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                    ),
-                                  );
-                            } else {
-                              _showNoInternetDialog();
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter email';
                             }
-                          }
-                        },
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            return null;
+                          },
+                        ),
+                      ),
+                      _gap,
+                      FractionallySizedBox(
+                        alignment: Alignment.center,
+                        widthFactor: screenWidth > 600 ? 0.8 : 1.0,
+                        child: TextFormField(
+                          key: const ValueKey('password'),
+                          controller: _passwordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            labelStyle: const TextStyle(
+                                color: Color.fromARGB(255, 56, 55, 55)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.greenAccent),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade400),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter password';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      _gap,
+                      FractionallySizedBox(
+                        alignment: Alignment.center,
+                        widthFactor: screenWidth > 600 ? 0.8 : 1.0,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            backgroundColor: const Color(0xFF80CBB2),
+                            shadowColor: Colors.grey.withOpacity(0.3),
+                            elevation: 5,
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              if (isDeviceConnected) {
+                                context.read<LoginBloc>().add(
+                                      LoginUserEvent(
+                                        context: context,
+                                        email: _emailController.text,
+                                        password: _passwordController.text,
+                                      ),
+                                    );
+                              } else {
+                                _showNoInternetDialog();
+                              }
+                            }
+                          },
+                          child: const Text(
+                            'Login',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
+                      // Adjusting the alignment to center the text
                       Align(
-                        alignment: Alignment.centerRight,
+                        alignment: Alignment.center,
                         child: TextButton(
                           onPressed: () {
                             context.read<LoginBloc>().add(
