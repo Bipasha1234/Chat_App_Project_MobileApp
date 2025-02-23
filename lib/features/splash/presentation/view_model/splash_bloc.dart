@@ -9,7 +9,7 @@ class SplashCubit extends Cubit<void> {
   final OnboardingBloc _onboardingBloc;
 
   Future<void> init(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 10), () async {
+    await Future.delayed(const Duration(seconds: 40), () async {
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
