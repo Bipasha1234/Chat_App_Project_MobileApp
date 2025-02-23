@@ -6,6 +6,7 @@ import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.da
 import 'package:cool_app/features/home/presentation/view_model/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -16,6 +17,35 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   bool isDarkMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _listenToAccelerometer();
+  }
+
+  void _listenToAccelerometer() {
+    // Listen to accelerometer events
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      if (event.x > 5) {
+        // Tilted to the right, switch to dark mode
+        if (!isDarkMode) {
+          setState(() {
+            isDarkMode = true;
+            context.read<ThemeCubit>().toggleTheme(isDarkMode); // Change theme
+          });
+        }
+      } else if (event.x < -5) {
+        // Tilted to the left, switch to light mode
+        if (isDarkMode) {
+          setState(() {
+            isDarkMode = false;
+            context.read<ThemeCubit>().toggleTheme(isDarkMode); // Change theme
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
