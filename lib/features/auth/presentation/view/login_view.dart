@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cool_app/features/auth/presentation/view/register_view.dart';
 import 'package:cool_app/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -14,8 +17,37 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
-
   final _gap = const SizedBox(height: 20);
+
+  late StreamSubscription<GyroscopeEvent> _gyroscopeSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen to gyroscope events
+    _gyroscopeSubscription = gyroscopeEvents.listen((GyroscopeEvent event) {
+      // Check if the device is tilted to the right (X axis)
+      if (event.x > 2) {
+        // Adjust the threshold if necessary
+        _navigateToRegisterView();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _gyroscopeSubscription.cancel();
+    super.dispose();
+  }
+
+  // Method to handle navigation to RegisterView
+  void _navigateToRegisterView() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RegisterView()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +216,7 @@ class _LoginViewState extends State<LoginView> {
                           },
                           child: RichText(
                             text: const TextSpan(
-                              text: "Don't have an Account?",
+                              text: "Don't have an Account? ",
                               style: TextStyle(color: Colors.black54),
                               children: [
                                 TextSpan(
