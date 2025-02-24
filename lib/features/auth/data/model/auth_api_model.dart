@@ -27,7 +27,7 @@ class AuthApiModel extends Equatable {
   Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
 
   //To entity
-  AuthEntity toEntitiy() {
+  AuthEntity toEntity() {
     return AuthEntity(
       userId: id,
       email: email,

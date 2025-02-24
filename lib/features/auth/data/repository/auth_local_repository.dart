@@ -12,9 +12,9 @@ class AuthLocalRepository implements IAuthRepository {
   AuthLocalRepository(this._authLocalDataSource);
 
   @override
-  Future<Either<Failure, AuthEntity>> getCurrentUser() async {
+  Future<Either<Failure, AuthEntity>> getCurrentUser(String token) async {
     try {
-      final currentUser = await _authLocalDataSource.getCurrentUser();
+      final currentUser = await _authLocalDataSource.getCurrentUser(token);
       return Right(currentUser);
     } catch (e) {
       return Left(LocalDatabaseFailure(message: e.toString()));

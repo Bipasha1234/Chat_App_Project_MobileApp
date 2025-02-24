@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cool_app/app/constants/api_endpoints.dart';
 import 'package:cool_app/features/auth/data/data_source/auth_data_source.dart';
+import 'package:cool_app/features/auth/data/model/auth_api_model.dart';
 import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
 import 'package:dio/dio.dart';
 
@@ -20,7 +21,12 @@ class AuthRemoteDatasource implements IAuthDataSource {
 
       if (response.statusCode == 200) {
         final token = response.data['token'];
-        return token;
+        if (token != null) {
+          // Optionally, save the token securely
+          return token;
+        } else {
+          throw Exception('Token not found in response');
+        }
       } else {
         throw Exception('Failed to login. Status code: ${response.statusCode}');
       }
@@ -60,9 +66,25 @@ class AuthRemoteDatasource implements IAuthDataSource {
   }
 
   @override
-  Future<AuthEntity> getCurrentUser() {
-    // TODO: implement getCurrentUser
-    throw UnimplementedError();
+  Future<AuthEntity> getCurrentUser(String token) async {
+    try {
+      var response = await _dio.get(
+        ApiEndpoints.getCurrentUser,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return AuthApiModel.fromJson(response.data).toEntity();
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override

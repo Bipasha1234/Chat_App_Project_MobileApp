@@ -1,25 +1,37 @@
-import 'package:cool_app/features/home/presentation/view/bottom_view/chats_view.dart';
-import 'package:equatable/equatable.dart';
+import 'package:cool_app/app/di/di.dart';
+import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
+import 'package:cool_app/features/chat/presentation/view/chat_view.dart';
+import 'package:cool_app/features/chat/presentation/view/settings/settings_view.dart';
+import 'package:cool_app/features/chat/presentation/view_model/chat/chat_bloc.dart';
+import 'package:cool_app/features/home/presentation/view/bottom_view/profile/profile_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// HomeState class for state management
-class HomeState extends Equatable {
+class HomeState {
   final int selectedIndex;
   final List<Widget> views;
+  final AuthEntity user; // Add user
 
-  const HomeState({
+  HomeState({
     required this.selectedIndex,
     required this.views,
+    required this.user,
   });
 
-  static HomeState initial() {
+  factory HomeState.initial(AuthEntity user) {
     return HomeState(
-      selectedIndex: 0,
+      selectedIndex: 0, // Default to the first tab
+      user: user, // Store user details
       views: [
-        ChatsView(), // Chats tab view
-        const Center(child: Text('Groups')),
-        const Center(child: Text('Profile')),
-        const Center(child: Text('Settings')),
+        BlocProvider(
+          create: (context) => getIt<ChatBloc>(),
+          child: const ChatView(),
+        ),
+        ProfileView(user: user), // Pass user to ProfileView
+        BlocProvider(
+          create: (context) => getIt<ChatBloc>(),
+          child: const SettingsView(),
+        ),
       ],
     );
   }
@@ -27,13 +39,12 @@ class HomeState extends Equatable {
   HomeState copyWith({
     int? selectedIndex,
     List<Widget>? views,
+    AuthEntity? user,
   }) {
     return HomeState(
       selectedIndex: selectedIndex ?? this.selectedIndex,
       views: views ?? this.views,
+      user: user ?? this.user,
     );
   }
-
-  @override
-  List<Object?> get props => [selectedIndex, views];
 }
