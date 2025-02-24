@@ -91,7 +91,7 @@ class _LoginViewState extends State<LoginView> {
                         'Login to your Account',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
@@ -217,12 +217,14 @@ class _LoginViewState extends State<LoginView> {
                           child: RichText(
                             text: const TextSpan(
                               text: "Don't have an Account? ",
-                              style: TextStyle(color: Colors.black54),
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 12),
                               children: [
                                 TextSpan(
                                   text: "Register",
                                   style: TextStyle(
-                                    color: Colors.black54,
+                                    color: Colors.black87,
+                                    fontSize: 12,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),

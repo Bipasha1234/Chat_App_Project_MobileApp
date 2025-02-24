@@ -326,11 +326,11 @@ class _ProfileViewState extends State<ProfileView> {
                               : Text(
                                   'Update Profile',
                                   style: theme.textTheme.labelLarge?.copyWith(
-                                    fontSize: isTablet
-                                        ? 16
-                                        : 18, // Adjust font size for tablets
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      fontSize: isTablet
+                                          ? 16
+                                          : 18, // Adjust font size for tablets
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 ),
                         ),
                       ),

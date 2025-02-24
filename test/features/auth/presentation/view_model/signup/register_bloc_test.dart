@@ -24,10 +24,10 @@ void main() {
   // Register fallback value for RegisterUserParams and UploadImageParams
   setUpAll(() {
     registerFallbackValue(const RegisterUserParams(
-      fullName: 'Dummy User',
-      email: 'dummy@example.com',
-      password: 'dummyPassword',
-      profilePic: 'dummyPic',
+      fullName: 'Bipasha Lamsal',
+      email: 'bipashalamsal@gmail.com',
+      password: '123456',
+      profilePic: 'people_profile_pic.png',
     ));
     registerFallbackValue(UploadImageParams(
       file: File('dummy/path/to/file'),

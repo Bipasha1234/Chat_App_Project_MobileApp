@@ -92,7 +92,7 @@ class _RegisterViewState extends State<RegisterView> {
                             'Create a New Account',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
                             ),
@@ -139,8 +139,8 @@ class _RegisterViewState extends State<RegisterView> {
                               );
                             },
                             child: SizedBox(
-                              height: 150,
-                              width: 150,
+                              height: 130,
+                              width: 130,
                               child: CircleAvatar(
                                 radius: 70,
                                 child: CircleAvatar(
@@ -309,12 +309,14 @@ class _RegisterViewState extends State<RegisterView> {
                               child: RichText(
                                 text: const TextSpan(
                                   text: "Already have an account? ",
-                                  style: TextStyle(color: Colors.black54),
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 12),
                                   children: [
                                     TextSpan(
                                       text: "Login",
                                       style: TextStyle(
                                         color: Colors.black54,
+                                        fontSize: 12,
                                         decoration: TextDecoration.underline,
                                       ),
                                     ),

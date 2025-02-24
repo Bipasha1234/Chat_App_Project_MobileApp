@@ -99,6 +99,22 @@ class _ChatScreenState extends State<ChatScreen> {
           onTap: _navigateToUserDetails, // Show user details on tap
           child: Text(widget.user.fullName),
         ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 20, 20, 20)
+            : const Color.fromARGB(255, 117, 198, 171),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white, // Set the back button color to white
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
+        ),
       ),
       body: BlocListener<ChatBloc, ChatState>(
         listener: (context, state) {

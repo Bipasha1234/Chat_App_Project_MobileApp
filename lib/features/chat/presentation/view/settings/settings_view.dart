@@ -27,20 +27,20 @@ class _SettingsViewState extends State<SettingsView> {
   void _listenToAccelerometer() {
     // Listen to accelerometer events
     accelerometerEvents.listen((AccelerometerEvent event) {
-      if (event.x > 5) {
+      if (event.x < -5) {
         // Tilted to the right, switch to dark mode
         if (!isDarkMode) {
           setState(() {
             isDarkMode = true;
-            context.read<ThemeCubit>().toggleTheme(isDarkMode); // Change theme
+            context.read<ThemeCubit>().toggleTheme(isDarkMode);
           });
         }
-      } else if (event.x < -5) {
+      } else if (event.x > 5) {
         // Tilted to the left, switch to light mode
         if (isDarkMode) {
           setState(() {
             isDarkMode = false;
-            context.read<ThemeCubit>().toggleTheme(isDarkMode); // Change theme
+            context.read<ThemeCubit>().toggleTheme(isDarkMode);
           });
         }
       }

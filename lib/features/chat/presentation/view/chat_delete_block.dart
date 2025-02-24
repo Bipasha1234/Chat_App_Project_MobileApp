@@ -17,6 +17,21 @@ class UserDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(user.fullName),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white, // Set the back button color to white
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? const Color.fromARGB(255, 20, 20, 20)
+            : const Color.fromARGB(255, 117, 198, 171),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color.fromARGB(255, 94, 79, 79)
+              : Colors.black,
+        ),
       ),
       body: Center(
         child: Padding(
@@ -26,13 +41,10 @@ class UserDetailsScreen extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 70,
-                backgroundImage: user.profilePic != null
+                backgroundImage: user.profilePic.isNotEmpty
                     ? NetworkImage(
                         '${ApiEndpoints.imageUrl}/${user.profilePic}')
-                    : null,
-                child: user.profilePic == null
-                    ? const Icon(Icons.person, size: 70, color: Colors.grey)
-                    : null,
+                    : const AssetImage('assets/images/user.png'),
               ),
               const SizedBox(height: 20),
               Text(
