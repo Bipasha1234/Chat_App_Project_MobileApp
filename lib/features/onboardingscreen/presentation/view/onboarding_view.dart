@@ -79,7 +79,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: ElevatedButton(
                   onPressed: _currentPage == onboardingData.length - 1
                       ? () {
-                          // Do nothing or show a different action here
                           print("Onboarding completed!");
                         }
                       : () {
@@ -89,7 +88,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           );
                         },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
+                    minimumSize: Size(
+                      MediaQuery.of(context).size.width > 600
+                          ? 200
+                          : double.infinity, // Adjust for tablet
+                      MediaQuery.of(context).size.width > 600
+                          ? 40
+                          : 50, // Smaller height on tablet
+                    ),
                     backgroundColor: const Color(0xFF80CBB2),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -99,7 +105,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     _currentPage == onboardingData.length - 1
                         ? "Get Started"
                         : "Next",
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: MediaQuery.of(context).size.width > 600
+                          ? 16
+                          : 18, // Adjust text size
+                    ),
                   ),
                 ),
               ),
