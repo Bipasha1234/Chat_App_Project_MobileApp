@@ -6,8 +6,6 @@ part 'auth_api_model.g.dart';
 
 @JsonSerializable()
 class AuthApiModel extends Equatable {
-  @override
-  List<Object?> get props => [id, fullName, profilePic, email, password];
   @JsonKey(name: '_id')
   final String? id;
   final String email;
@@ -29,12 +27,13 @@ class AuthApiModel extends Equatable {
   Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
 
   //To entity
-  AuthEntity toEntitiy() {
+  AuthEntity toEntity() {
     return AuthEntity(
       userId: id,
       email: email,
       fullName: fullName,
       password: password ?? '',
+      profilePic: profilePic,
     );
   }
 
@@ -47,4 +46,6 @@ class AuthApiModel extends Equatable {
       profilePic: entity.profilePic,
     );
   }
+  @override
+  List<Object?> get props => [id, email, fullName, password, profilePic];
 }

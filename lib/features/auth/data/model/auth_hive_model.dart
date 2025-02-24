@@ -33,7 +33,7 @@ class AuthHiveModel extends Equatable {
         fullName = '',
         email = '',
         password = '',
-        profilePic = null;
+        profilePic = '';
 
   // From Entity
   factory AuthHiveModel.fromEntity(AuthEntity entity) {

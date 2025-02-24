@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cool_app/app/constants/api_endpoints.dart';
 import 'package:cool_app/features/auth/data/data_source/auth_data_source.dart';
+import 'package:cool_app/features/auth/data/model/auth_api_model.dart';
 import 'package:cool_app/features/auth/domain/entity/auth_entity.dart';
 import 'package:dio/dio.dart';
 
@@ -20,7 +21,12 @@ class AuthRemoteDatasource implements IAuthDataSource {
 
       if (response.statusCode == 200) {
         final token = response.data['token'];
-        return token;
+        if (token != null) {
+          // Optionally, save the token securely
+          return token;
+        } else {
+          throw Exception('Token not found in response');
+        }
       } else {
         throw Exception('Failed to login. Status code: ${response.statusCode}');
       }
@@ -60,42 +66,57 @@ class AuthRemoteDatasource implements IAuthDataSource {
   }
 
   @override
-  Future<AuthEntity> getCurrentUser() {
-    // TODO: implement getCurrentUser
-    throw UnimplementedError();
+  Future<AuthEntity> getCurrentUser(String token) async {
+    try {
+      var response = await _dio.get(
+        ApiEndpoints.getCurrentUser,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return AuthApiModel.fromJson(response.data).toEntity();
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override
-  Future<String> uploadProfilePicture(File file) {
-    // TODO: implement uploadProfilePicture
-    throw UnimplementedError();
+  Future<String> uploadProfilePicture(File file) async {
+    try {
+      String fileName = file.path.split('/').last;
+      FormData formData = FormData.fromMap(
+        {
+          'profilePicture': await MultipartFile.fromFile(
+            file.path,
+            filename: fileName,
+          ),
+        },
+      );
+
+      Response response = await _dio.post(
+        ApiEndpoints.uploadImage,
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        // Extract the image name from the response
+        final str = response.data['data'];
+
+        return str;
+      } else {
+        throw Exception(response.statusMessage);
+      }
+    } on DioException catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
-
-  // @override
-  // Future<String> uploadProfilePicture(File file) async {
-  //   try {
-  //     String fileName = file.path.split('/').last;
-  //     FormData formData = FormData.fromMap({
-  //       "file": await MultipartFile.fromFile(file.path, filename: fileName),
-  //     });
-
-  //     Response response = await _dio.post(
-  //       ApiEndpoints.uploadprofilePic,
-  //       data: formData,
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final profilePicUrl = response.data['profilePicUrl'];
-  //       return profilePicUrl;
-  //     } else {
-  //       throw Exception(
-  //           'Failed to upload profile picture. Status code: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     if (e is DioException) {
-  //       throw Exception('Dio error occurred: ${e.message}');
-  //     }
-  //     throw Exception('An error occurred while uploading profile picture: $e');
-  //   }
-  // }
 }
