@@ -59,7 +59,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: ThemeConstant.primaryColor,
+            color: Color.fromARGB(255, 69, 173, 139),
           ),
         ),
       ),
