@@ -1,16 +1,9 @@
-# chat_app
+Chattix is a real-time messaging app designed for seamless communication. It starts with a splash screen that checks the internet before onboarding users. After login, users can send and receive messages instantly on the Chat Screen. Tapping a name opens the profile, showing key details and chat control options. The Settings section allows theme switching, managing blocked accounts, and privacy controls. Interactive sensor features, like tilting for Dark Mode and Gyroscope navigation, enhance user experience. With a simple interface and smart features, Chattix ensures smooth, user-friendly messaging.
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
